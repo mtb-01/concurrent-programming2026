@@ -1,14 +1,14 @@
 namespace Project.Data
 {
-  internal class Vector : IVector
-  {
-    public double x;
-    public double y;
-
-    public Vector(double XComponent, double YComponent)
+    internal class Vector : IVector
     {
-      x = XComponent;
-      y = YComponent;
+        public double x {get; init; }
+        public double y {get; init; }
+
+        public Vector(double xComponent, double yComponent)
+        {
+            x = xComponent;
+            y = yComponent;
+        }
     }
-  }
 }

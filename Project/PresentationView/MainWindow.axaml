@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Project.PresentationViewModel"
         Title="Project"
-        SizeToContent="WidthAndHeight"
+        Height="400"
+		Width="400"
         x:CompileBindings="true"
         x:DataType="vm:MainWindowViewModel"
         mc:Ignorable="d">

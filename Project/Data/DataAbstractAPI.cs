@@ -16,4 +16,6 @@ namespace Project.Data
     {
         event EventHandler<IVector> NewPositionNotification;
     }
+
+    public abstract void Start(int ballCount) {}
 }

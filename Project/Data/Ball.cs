@@ -4,9 +4,15 @@ namespace Project.Data
 {
     internal class Ball : IBall
     {
+        internal Ball(Vector initialPosition, Vector initialVelocity)
+        {
+            Position = initialPosition;
+            Velocity = initialVelocity;
+        }
         public event EventHandler<IVector>? NewPositionNotification;
 
         private Vector Position;
+        private Vector Velocity;
         
         private void Move(Vector delta)
         {

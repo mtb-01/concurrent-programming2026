@@ -11,9 +11,9 @@ namespace Project.Data
 
         public abstract List<IBall> GetBalls();
 
-        public abstract bool ClearBalls();
+        public abstract void ClearBalls();
 
-        public abstract bool AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference);
+        public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference);
     }
 
     public interface IVector
@@ -28,10 +28,5 @@ namespace Project.Data
         IVector Velocity { get; }
         double Mass { get; init; }
         double Circumference { get; init; }
-        event EventHandler<IVector> NewPositionNotification;
-        public void Start(int ballCount)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

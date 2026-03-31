@@ -28,9 +28,5 @@ namespace Project.Data
             NewPositionNotification?.Invoke(this, Position);
         }
 
-        public void Start(int ballCount)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -20,19 +20,16 @@ namespace Project.Data
 
         public override void ClearBalls()
         {
-            // czysci liste
             ListOfBalls = null;
         }
 
         public override List<IBall> GetBalls()
         {
-            // po prostu zwraca liste
             return ListOfBalls;
         }
 
         public override void Load()
         {
-            // wypelnia liste losowymi kulkami
             for (int i = 0; i < NumberOfBalls; i++)
             {
                 double valuePosX = 10.0 * new Random().NextDouble();
@@ -51,9 +48,6 @@ namespace Project.Data
             }
         }
 
-        public override void Save()
-        {
-            // ?
-        }
+        public override void Save() {}
     }
 }

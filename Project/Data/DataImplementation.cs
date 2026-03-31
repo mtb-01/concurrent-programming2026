@@ -6,12 +6,13 @@ namespace Project.Data
     internal class DataImplementation : DataAbstractAPI
     {
         public int NumberOfBalls { get; init; }
-        private List<IBall>? ListOfBalls { get; set; }
+        private List<IBall> ListOfBalls { get; set; } = new List<IBall>();
+
         internal DataImplementation (int numberOfBalls)
         {
             NumberOfBalls = numberOfBalls;
-            ListOfBalls = null;
         }
+
         public override void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
         {
             Ball ball = new(initialPosition, initialVelocity, mass, circumference);
@@ -20,7 +21,7 @@ namespace Project.Data
 
         public override void ClearBalls()
         {
-            ListOfBalls = null;
+            ListOfBalls.Clear();
         }
 
         public override List<IBall> GetBalls()
@@ -32,17 +33,17 @@ namespace Project.Data
         {
             for (int i = 0; i < NumberOfBalls; i++)
             {
-                double valuePosX = 10.0 * new Random().NextDouble();
-                double valuePosY = 10.0 * new Random().NextDouble();
-                double valueVelX = 10.0 * new Random().NextDouble();
-                double valueVelY = 10.0 * new Random().NextDouble();
-                double valueMass = 0.1 + (10.0 - 0.1) * new Random().NextDouble();
-                double valueCir = 0.1 + (10.0 - 0.1) * new Random().NextDouble();
+                Random random = new Random();
+
+                double valuePosX = 400.0 * random.NextDouble();
+                double valuePosY = 400.0 * random.NextDouble();
+                double valueVelX = 50.0 * (random.NextDouble() - 0.5);
+                double valueVelY = 50.0 * (random.NextDouble() - 0.5);
+                double mass = 0.1 + (10.0 - 0.1) * random.NextDouble();
+                double cir = 0.1 + (10.0 - 0.1) * random.NextDouble();
 
                 Vector pos = new(valuePosX, valuePosY);
                 Vector vel = new(valueVelX, valueVelY);
-                double mass = valueMass;
-                double cir = valueCir;
 
                 AddBall(pos, vel, mass, cir);
             }

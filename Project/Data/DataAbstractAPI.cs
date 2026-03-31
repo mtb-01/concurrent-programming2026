@@ -5,6 +5,11 @@ namespace Project.Data
 {
     public abstract class DataAbstractAPI
     {
+        public static DataAbstractAPI GetDataLayer(int numberOfBalls)
+        {
+            return new DataImplementation(numberOfBalls);
+        }
+
         public abstract void Save();
 
         public abstract void Load();
@@ -18,8 +23,8 @@ namespace Project.Data
 
     public interface IVector
     {
-        double x { get; init; }
-        double y { get; init; }
+        double X { get; init; }
+        double Y { get; init; }
     }
 
     public interface IBall

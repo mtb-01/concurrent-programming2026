@@ -1,19 +1,10 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Project.Logic;
+using ILogicBall = Project.Logic.IBall;
 
 namespace Project.Presentation.Model;
 
-internal interface IVector
-{
-    double X { get; }
-    double Y { get; }
-}
-
-internal interface ILogicBall
-{
-    event EventHandler<IVector> NewPositionNotification;
-}
 
 internal class Ball : IBall
 {

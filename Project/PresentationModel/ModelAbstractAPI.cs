@@ -10,6 +10,8 @@ public abstract class ModelAbstractAPI
         return new ModelImplementation();
     }
 
+    public abstract void Start();
+
     public event EventHandler<IBall>? BallAddedNotification;
     public event EventHandler? BallsClearedNotification;
 

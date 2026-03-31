@@ -7,7 +7,9 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        DataContext = new MainWindowViewModel();
+        MainWindowViewModel viewModel = new MainWindowViewModel();
+        DataContext = viewModel;
+        viewModel.Start();
         InitializeComponent();
     }
 }

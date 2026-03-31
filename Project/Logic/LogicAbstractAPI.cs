@@ -5,26 +5,40 @@ namespace Project.Logic
 {
     public abstract class LogicAbstractAPI
     {
-        public abstract void Start();
+        public static LogicAbstractAPI GetLogicLayer()
+        {
+            return new LogicImplementation();
+        }
+
+        public abstract void Start(double moveDelay);
+
+        public event EventHandler<IBall>? BallAddedNotification;
+        public event EventHandler? BallsClearedNotification;
+
+        protected void RaiseBallAddedNotification(IBall ball)
+        {
+            BallAddedNotification?.Invoke(this, ball);
+        }
+
+        protected void RaiseBallsClearedNotification()
+        {
+            BallsClearedNotification?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public interface IBall
     {
-        IVector Position { get; set; }
+        IVector Position { get; }
         IVector Velocity { get; }
         double Mass { get; init; }
         double Circumference { get; init; }
-        double MoveDelay { get; init; }
-        readonly Timer MoveTimer { get; }
 
-        public event EventHandler<IVector>? NewPositionNotification;
-        public void Move();
-        public void EmitNewPositionNotification();
+        event EventHandler<IVector>? NewPositionNotification;
     }
 
     public interface IVector
     {
-        double x { get; init; }
-        double y { get; init; }
+        double X { get; init; }
+        double Y { get; init; }
     }
 }

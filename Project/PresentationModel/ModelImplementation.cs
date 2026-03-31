@@ -1,19 +1,6 @@
-
-
-using System;
+using Project.Logic;
 
 namespace Project.Presentation.Model;
-
-internal class LogicAbstractAPI
-{
-    public static LogicAbstractAPI GetLogicLayer()
-    {
-        return new LogicAbstractAPI();
-    }
-
-    public event EventHandler<IBall>? BallAddedNotification;
-    public event EventHandler? BallsClearedNotification;
-}
 
 internal class ModelImplementation : ModelAbstractAPI
 {
@@ -24,9 +11,13 @@ internal class ModelImplementation : ModelAbstractAPI
         if (logicLayer == null)
             logicLayer = LogicAbstractAPI.GetLogicLayer();
         this.logicLayer = logicLayer;
-        logicLayer.BallAddedNotification += (sender, ball) => RaiseBallAddedNotification(ball);
+        logicLayer.BallAddedNotification += (sender, ball) => RaiseBallAddedNotification(new Ball(ball.Position.X, ball.Position.Y, ball));
         logicLayer.BallsClearedNotification += (sender, e) => RaiseBallsClearedNotification();
     }
 
-    
+    public override void Start()
+    {
+        logicLayer.Start(1.0 / 60.0);
+    }
+
 }

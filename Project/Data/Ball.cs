@@ -10,23 +10,12 @@ namespace Project.Data
         public double Circumference { get; init; }
 
 
-        internal Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
+        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
+            Mass = mass;
+            Circumference = circumference;
         }
-        public event EventHandler<IVector>? NewPositionNotification;
-        
-        internal void Move(Vector delta)
-        {
-            Position = new Vector(Position.x + delta.x, Position.y + delta.y);
-            EmitNewPositionNotification();
-        }
-
-        private void EmitNewPositionNotification()
-        {
-            NewPositionNotification?.Invoke(this, Position);
-        }
-
     }
 }

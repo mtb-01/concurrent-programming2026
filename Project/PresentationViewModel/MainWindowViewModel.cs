@@ -16,6 +16,12 @@ public class MainWindowViewModel : ViewModelBase
         modelLayer.BallsClearedNotification += (sender, e) => Balls.Clear();
     }
 
+    public void Start()
+    {
+        modelLayer.Start();
+    }
+
     public ObservableCollection<IBall> Balls { get; } = new ObservableCollection<IBall>();
 
 }
+

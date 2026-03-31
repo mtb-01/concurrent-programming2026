@@ -3,4 +3,8 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PresentationModel\PresentationModel.csproj" />
+  </ItemGroup>
+
 </Project>

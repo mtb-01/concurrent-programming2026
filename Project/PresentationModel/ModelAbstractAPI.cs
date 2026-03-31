@@ -5,6 +5,11 @@ namespace Project.Presentation.Model;
 
 public abstract class ModelAbstractAPI
 {
+    public static ModelAbstractAPI GetModelLayer()
+    {
+        return new ModelImplementation();
+    }
+
     public event EventHandler<IBall>? BallAddedNotification;
     public event EventHandler? BallsClearedNotification;
 

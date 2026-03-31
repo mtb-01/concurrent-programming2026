@@ -1,7 +1,7 @@
 using Avalonia;
 using System;
 
-namespace Project.PresentationView
+namespace Project.Presentation.View
 {
     class Program
     {

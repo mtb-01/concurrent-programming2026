@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace Project.PresentationViewModel
+namespace Project.Presentation.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {

@@ -1,9 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Project.PresentationViewModel;
+using Project.Presentation.ViewModel;
 
-namespace Project.PresentationView;
+namespace Project.Presentation.View;
 
 public partial class App : Application
 {

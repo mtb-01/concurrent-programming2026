@@ -1,4 +1,4 @@
-<Application x:Class="Project.PresentationView.App"
+<Application x:Class="Project.Presentation.View.App"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              RequestedThemeVariant="Light">

@@ -9,9 +9,17 @@ namespace Project.Logic
         public IVector Velocity { get; private set; }
         public double Mass { get; init; }
         public double Circumference { get; init; }
-        private double MoveDelay { get; init; }
+        public double MoveDelay
+        { 
+            get;
+            set
+            {
+                Stop();
+                field = value;
+            }
+        }
 
-        private readonly Timer moveTimer;
+        private Timer? moveTimer;
 
         public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference, double moveDelay)
         {
@@ -20,7 +28,19 @@ namespace Project.Logic
             Mass = mass;
             Circumference = circumference;
             MoveDelay = moveDelay;
-            moveTimer = new Timer(Simulate, null, TimeSpan.Zero, TimeSpan.FromSeconds(moveDelay));
+        }
+
+        internal void Start()
+        {
+            Stop();
+            moveTimer = new Timer(Simulate, null, TimeSpan.Zero, TimeSpan.FromSeconds(MoveDelay));
+        }
+
+        internal void Stop()
+        {
+            if (moveTimer != null)
+                moveTimer.Dispose();
+                moveTimer = null;
         }
 
         public event EventHandler<IVector>? NewPositionNotification;
@@ -30,7 +50,7 @@ namespace Project.Logic
             NewPositionNotification?.Invoke(this, Position);
         }
 
-        private void Simulate(object? state)
+        internal void Simulate(object? state)
         {
             Position = new Vector(Position.X + Velocity.X * MoveDelay, Position.Y + Velocity.Y * MoveDelay);
             EmitNewPositionNotification();

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Project.Data;
 using IDataBall = Project.Data.IBall;
@@ -13,7 +12,7 @@ namespace Project.Logic
         public LogicImplementation (DataAbstractAPI? data = null)
         {
             if (data == null)
-                data = DataAbstractAPI.GetDataLayer(5);
+                data = DataAbstractAPI.GetDataLayer();
             this.data = data;
         }
 
@@ -24,7 +23,8 @@ namespace Project.Logic
             {
                 IVector position = new Vector(dataBall.Position.X, dataBall.Position.Y);
                 IVector velocity = new Vector(dataBall.Velocity.X, dataBall.Velocity.Y);
-                IBall ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference, moveDelay);
+                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference, moveDelay);
+                ball.Start();
                 AddBall(ball);
             }
         }

@@ -5,9 +5,18 @@ namespace Project.Data
 {
     public abstract class DataAbstractAPI
     {
-        public static DataAbstractAPI GetDataLayer(int numberOfBalls)
+        private static DataAbstractAPI? dataLayer;
+
+        public static void SetDataLayer(DataAbstractAPI dataLayer)
         {
-            return new DataImplementation(numberOfBalls);
+            DataAbstractAPI.dataLayer = dataLayer;
+        }
+
+        public static DataAbstractAPI GetDataLayer()
+        {
+            if (dataLayer == null)
+                throw new NullReferenceException("No data layer instance available.");
+            return dataLayer;
         }
 
         public abstract void Save();
@@ -21,10 +30,23 @@ namespace Project.Data
         public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference);
     }
 
+    public interface IDataLayerFactory
+    {
+        DataAbstractAPI Get();
+    }
+
     public interface IVector
     {
         double X { get; init; }
         double Y { get; init; }
+    }
+
+    public static class VectorFactory
+    {
+        public static IVector Get(double x, double y)
+        {
+            return new Vector(x, y);
+        }
     }
 
     public interface IBall

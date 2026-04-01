@@ -5,42 +5,50 @@ namespace Project.Data
 {
     internal class DataImplementation : DataAbstractAPI
     {
-        public int NumberOfBalls { get; init; }
-        private List<IBall> ListOfBalls { get; set; } = new List<IBall>();
+        required public int NumberOfBalls { get; set; }
+        required public IVector XPositionRange { get; set; }
+        required public IVector YPositionRange { get; set; }
+        required public IVector XVelocityRange { get; set; }
+        required public IVector YVelocityRange { get; set; }
+        required public IVector MassRange { get; set; }
+        required public IVector CircumferenceRange { get; set; }
 
-        internal DataImplementation (int numberOfBalls)
-        {
-            NumberOfBalls = numberOfBalls;
-        }
+        private readonly List<IBall> listOfBalls = new List<IBall>();
+
+        public DataImplementation () {}
 
         public override void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
         {
             Ball ball = new(initialPosition, initialVelocity, mass, circumference);
-            ListOfBalls.Add(ball);
+            listOfBalls.Add(ball);
         }
 
         public override void ClearBalls()
         {
-            ListOfBalls.Clear();
+            listOfBalls.Clear();
         }
 
         public override List<IBall> GetBalls()
         {
-            return ListOfBalls;
+            return new List<IBall>(listOfBalls);
+        }
+
+        private double GetRandomInRange(double rangeStart, double rangeEnd)
+        {
+            Random random = new Random();
+            return rangeStart + (rangeEnd - rangeStart) * random.NextDouble();
         }
 
         public override void Load()
         {
             for (int i = 0; i < NumberOfBalls; i++)
             {
-                Random random = new Random();
-
-                double valuePosX = 400.0 * random.NextDouble();
-                double valuePosY = 400.0 * random.NextDouble();
-                double valueVelX = 50.0 * (random.NextDouble() - 0.5);
-                double valueVelY = 50.0 * (random.NextDouble() - 0.5);
-                double mass = 0.1 + (10.0 - 0.1) * random.NextDouble();
-                double cir = 0.1 + (10.0 - 0.1) * random.NextDouble();
+                double valuePosX = GetRandomInRange(XPositionRange.X, XPositionRange.Y);
+                double valuePosY = GetRandomInRange(YPositionRange.X, YPositionRange.Y);
+                double valueVelX = GetRandomInRange(XVelocityRange.X, XVelocityRange.Y);
+                double valueVelY = GetRandomInRange(YVelocityRange.X, YVelocityRange.Y);
+                double mass = GetRandomInRange(MassRange.X, MassRange.Y);
+                double cir = GetRandomInRange(CircumferenceRange.X, CircumferenceRange.Y);
 
                 Vector pos = new(valuePosX, valuePosY);
                 Vector vel = new(valueVelX, valueVelY);

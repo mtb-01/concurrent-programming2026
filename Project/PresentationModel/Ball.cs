@@ -32,12 +32,17 @@ internal class Ball : IBall
         }
     }
 
+    public double Mass { get; init; }
+    public double Circumference { get; init; }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public Ball(double positionX, double positionY, ILogicBall logicBall)
+    public Ball(double positionX, double positionY, double mass, double circumference, ILogicBall logicBall)
     {
         PositionX = positionX;
         PositionY = positionY;
+        Mass = mass;
+        Circumference = circumference;
         logicBall.NewPositionNotification += OnNewPositionNotification;
     }
 

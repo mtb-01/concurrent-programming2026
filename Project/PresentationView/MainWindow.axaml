@@ -36,7 +36,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Fill="Blue" Height="10" Width="10"/>
+                    <Ellipse Fill="Blue" Height="{Binding Circumference}" Width="{Binding Circumference}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.Styles>

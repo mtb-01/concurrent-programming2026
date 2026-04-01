@@ -11,7 +11,9 @@ internal class ModelImplementation : ModelAbstractAPI
         if (logicLayer == null)
             logicLayer = LogicAbstractAPI.GetLogicLayer();
         this.logicLayer = logicLayer;
-        logicLayer.BallAddedNotification += (sender, ball) => RaiseBallAddedNotification(new Ball(ball.Position.X, ball.Position.Y, ball));
+        logicLayer.BallAddedNotification += (sender, ball) => RaiseBallAddedNotification(
+                new Ball(ball.Position.X, ball.Position.Y, ball.Mass, ball.Circumference, ball)
+            );
         logicLayer.BallsClearedNotification += (sender, e) => RaiseBallsClearedNotification();
     }
 

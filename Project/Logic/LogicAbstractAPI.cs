@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Project.Logic
 {
@@ -23,6 +24,8 @@ namespace Project.Logic
         {
             BallsClearedNotification?.Invoke(this, EventArgs.Empty);
         }
+
+        public abstract List<IBall> GetBalls();
     }
 
     public interface IBall

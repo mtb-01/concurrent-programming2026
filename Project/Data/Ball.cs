@@ -1,5 +1,3 @@
-using System;
-
 namespace Project.Data
 {
     internal class Ball : IBall

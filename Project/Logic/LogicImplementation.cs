@@ -34,5 +34,10 @@ namespace Project.Logic
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
         }
+
+        public override List<IBall> GetBalls()
+        {
+            return new List<IBall>(listOfBalls);
+        }
     }
 }

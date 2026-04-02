@@ -39,12 +39,6 @@ namespace Project.Logic.Test
     public class TestDataImplementation : DataAbstractAPI
     {
         required public int NumberOfBalls { get; set; }
-        required public IDataVector XPositionRange { get; set; }
-        required public IDataVector YPositionRange { get; set; }
-        required public IDataVector XVelocityRange { get; set; }
-        required public IDataVector YVelocityRange { get; set; }
-        required public IDataVector MassRange { get; set; }
-        required public IDataVector CircumferenceRange { get; set; }
         public TestDataImplementation() { }
         private List<IDataBall> listOfBalls = new List<IDataBall>();
 
@@ -52,21 +46,16 @@ namespace Project.Logic.Test
         {
             return new List<IDataBall>(listOfBalls);
         }
-        private double GetRandomInRange(double rangeStart, double rangeEnd)
-        {
-            Random random = new Random();
-            return rangeStart + (rangeEnd - rangeStart) * random.NextDouble();
-        }
         public override void Load()
         {
             for (int i = 0; i < NumberOfBalls; i++)
             {
-                double valuePosX = GetRandomInRange(XPositionRange.X, XPositionRange.Y);
-                double valuePosY = GetRandomInRange(YPositionRange.X, YPositionRange.Y);
-                double valueVelX = GetRandomInRange(XVelocityRange.X, XVelocityRange.Y);
-                double valueVelY = GetRandomInRange(YVelocityRange.X, YVelocityRange.Y);
-                double mass = GetRandomInRange(MassRange.X, MassRange.Y);
-                double cir = GetRandomInRange(CircumferenceRange.X, CircumferenceRange.Y);
+                double valuePosX = 10.0;
+                double valuePosY = 10.0;
+                double valueVelX = 10.0;
+                double valueVelY = 10.0;
+                double mass = 10.0;
+                double cir = 10.0;
 
                 DataVector pos = new(valuePosX, valuePosY);
                 DataVector vel = new(valueVelX, valueVelY);
@@ -96,13 +85,7 @@ namespace Project.Logic.Test
 
             TestDataImplementation data = new TestDataImplementation()
             {
-                NumberOfBalls = balls,
-                XPositionRange = range,
-                YPositionRange = range,
-                XVelocityRange = range,
-                YVelocityRange = range,
-                MassRange = range,
-                CircumferenceRange = range
+                NumberOfBalls = balls
             };
 
             LogicImplementation logic = new LogicImplementation(data);

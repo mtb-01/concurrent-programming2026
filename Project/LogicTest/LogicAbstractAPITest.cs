@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IDataBall = Project.Data.IBall;
@@ -7,26 +6,24 @@ using Project.Data;
 
 namespace Project.Logic.Test
 {
-    [TestClass]
-    public class DataVector : IDataVector
+    internal class TestDataVector : IDataVector
     {
         public double X { get; init; }
         public double Y { get; init; }
-        public DataVector(double xComponent, double yComponent)
+        public TestDataVector(double xComponent, double yComponent)
         {
             X = xComponent;
             Y = yComponent;
         }
     }
 
-    [TestClass]
-    public class DataBall : IDataBall
+    internal class TestDataBall : IDataBall
     {
-        public Data.IVector Position { get; set; }
-        public Data.IVector Velocity { get; }
+        public IDataVector Position { get; set; }
+        public IDataVector Velocity { get; }
         public double Mass { get; init; }
         public double Circumference { get; init; }
-        public DataBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double circumference)
+        public TestDataBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double circumference)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
@@ -35,8 +32,7 @@ namespace Project.Logic.Test
         }
     }
 
-    [TestClass]
-    public class TestDataImplementation : DataAbstractAPI
+    internal class TestDataImplementation : DataAbstractAPI
     {
         required public int NumberOfBalls { get; set; }
         public TestDataImplementation() { }
@@ -57,8 +53,8 @@ namespace Project.Logic.Test
                 double mass = 10.0;
                 double cir = 10.0;
 
-                DataVector pos = new(valuePosX, valuePosY);
-                DataVector vel = new(valueVelX, valueVelY);
+                TestDataVector pos = new(valuePosX, valuePosY);
+                TestDataVector vel = new(valueVelX, valueVelY);
 
                 AddBall(pos, vel, mass, cir);
             }
@@ -67,9 +63,9 @@ namespace Project.Logic.Test
 
         public override void Save() { }
 
-        public override void AddBall(Data.IVector initialPosition, Data.IVector initialVelocity, double mass, double circumference)
+        public override void AddBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double circumference)
         {
-            DataBall ball = new(initialPosition, initialVelocity, mass, circumference);
+            TestDataBall ball = new(initialPosition, initialVelocity, mass, circumference);
             listOfBalls.Add(ball);
         }
     }
@@ -81,7 +77,6 @@ namespace Project.Logic.Test
         public void StartTestMethod()
         {
             int balls = 3;
-            IDataVector range = new DataVector(1.0, 10.0);
 
             TestDataImplementation data = new TestDataImplementation()
             {

@@ -39,8 +39,10 @@ namespace Project.Logic
         internal void Stop()
         {
             if (moveTimer != null)
+            {
                 moveTimer.Dispose();
                 moveTimer = null;
+            }
         }
 
         public event EventHandler<IVector>? NewPositionNotification;

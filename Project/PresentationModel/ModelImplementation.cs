@@ -43,4 +43,9 @@ internal class ModelImplementation : ModelAbstractAPI
     {
         logicLayer.Stop();
     }
+
+    public override void StartLayer()
+    {
+        logicLayer.StartLayer();
+    }
 }

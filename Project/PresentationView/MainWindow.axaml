@@ -26,34 +26,37 @@
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox> -->
+    
+    <StackPanel VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding StartCommand}">Start</Button>
+            <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding StopCommand}">Stop</Button>
+            <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding QuitCommand}">Quit</Button>
+            <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding ClearBallsCommand}">Clear balls</Button>
+            <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding CreateBallCommand}">Create a random ball</Button>
+        </StackPanel>
+        <Border BorderThickness="4" BorderBrush="Black" Height="400" Width="400">
+            <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse Fill="Blue" Height="{Binding Circumference}" Width="{Binding Circumference}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Styles>
+                    <Style Selector="ContentPresenter" x:DataType="model:IBall">
+                        <Setter Property="Canvas.Left" Value="{Binding PositionX}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding PositionY}"/>
+                    </Style>
+                </ItemsControl.Styles>
+            </ItemsControl>
+        </Border>
+        <!--<TextBlock Text="{Binding NumberOfBalls}" HorizontalAlignment="Left"/>-->
+        <TextBlock Text="Number of balls: " HorizontalAlignment="Left"/>
+    </StackPanel>
 
-    <Border BorderThickness="4" BorderBrush="Black" Height="400" Width="400">
-        <ItemsControl ItemsSource="{Binding Balls}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Ellipse Fill="Blue" Height="{Binding Circumference}" Width="{Binding Circumference}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.Styles>
-                <Style Selector="ContentPresenter" x:DataType="model:IBall">
-                    <Setter Property="Canvas.Left" Value="{Binding PositionX}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding PositionY}"/>
-                </Style>
-            </ItemsControl.Styles>
-        </ItemsControl>
-    </Border>
-
-    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding StartCommand}">Start</Button>
-    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding StopCommand}">Stop</Button>
-    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding QuitCommand}">Quit</Button>
-    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding ClearBallsCommand}">Clear balls</Button>
-    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding CreateBallCommand}">Create a random ball</Button>
-
-    <!-- <TextBlock Text="Number of balls: {Binding NumberOfBalls}" HorizontalAlignment="Left" VerticalAlignment="Up"/>
--->
 </Window>

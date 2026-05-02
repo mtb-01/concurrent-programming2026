@@ -14,6 +14,7 @@ public abstract class ModelAbstractAPI
     public abstract void Start();
     public abstract void Stop();
     public abstract void Quit();
+    public abstract void StartLayer();
 
     public event EventHandler<IBall>? BallAddedNotification;
     public event EventHandler? BallsClearedNotification;

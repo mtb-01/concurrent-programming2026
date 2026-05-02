@@ -33,6 +33,8 @@ namespace Project.Logic
 
         internal abstract ICollisionObject GetArea();
 
+        public abstract void StartLayer();
+
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;
 

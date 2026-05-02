@@ -35,8 +35,6 @@ namespace Project.Logic
             {
                 
             };
-
-            data.Load(InitialBallCount);
         }
 
         public override void Start(double moveDelay)
@@ -103,6 +101,11 @@ namespace Project.Logic
         internal override ICollisionObject GetArea()
         {
             return area;
+        }
+
+        public override void StartLayer()
+        {
+            data.Load(InitialBallCount);
         }
     }
 }

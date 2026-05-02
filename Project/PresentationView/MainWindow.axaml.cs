@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Project.Presentation.ViewModel;
 using Project.Data;
+using Project.Logic;
 
 namespace Project.Presentation.View;
 
@@ -19,9 +20,17 @@ public partial class MainWindow : Window
         };
         DataAbstractAPI.SetDataLayer(dataLayerFactory.Get());
 
+        ILogicLayerFactory logicLayerFactory = new LogicImplementationFactory()
+        {
+            AreaX = 10,
+            AreaY = 10,
+            InitialBallCount = 10
+        };
+        LogicAbstractAPI.SetLogicLayer(logicLayerFactory.Get());
+
         MainWindowViewModel viewModel = new MainWindowViewModel();
         DataContext = viewModel;
-        viewModel.StartCommand();
+        viewModel.StartLayer();
         InitializeComponent();
     }
 }

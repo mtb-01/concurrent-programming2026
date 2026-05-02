@@ -80,11 +80,16 @@ namespace Project.Logic.Test
 
             TestDataImplementation data = new TestDataImplementation();
 
-            LogicImplementation logic = new LogicImplementation(balls, data);
+            LogicImplementation logic = new LogicImplementation(balls, 100, 100, data);
+            Assert.AreEqual(balls, logic.GetBalls().Count);
+            Assert.IsFalse(logic.IsStarted());
+
             double delay = 10;
             logic.Start(delay);
-
-            Assert.AreEqual(balls, logic.GetBalls().Count);
+            Assert.IsTrue(logic.IsStarted());
+            
+            logic.Stop();
+            Assert.IsFalse(logic.IsStarted());
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Project.Logic
 {
-    internal class Ball : IBall
+    internal class Ball : IBall, ICollisionObject
     {
         public IVector Position { get; private set; }
         public IVector Velocity { get; private set; }
@@ -21,14 +21,17 @@ namespace Project.Logic
             }
         }
 
+        private LogicAbstractAPI logic;
+
         private Timer? moveTimer;
 
-        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
+        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference, LogicAbstractAPI logic)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
             Mass = mass;
             Circumference = circumference;
+            this.logic = logic;
         }
 
         private bool isStarted()
@@ -62,8 +65,22 @@ namespace Project.Logic
 
         internal void Simulate(object? state)
         {
-            Position = new Vector(Position.X + Velocity.X * MoveDelay, Position.Y + Velocity.Y * MoveDelay);
+            Vector movement = new Vector(Velocity.X * MoveDelay, Velocity.Y * MoveDelay);
+            CollisionInfo collisionInfo = logic.GetArea().Collide(this, movement);
+            if (collisionInfo.Collided)
+            {
+                movement *= collisionInfo.MoveFraction;
+                Velocity = collisionInfo.NewVelocity;
+                movement += collisionInfo.NewVelocity * (1 - collisionInfo.MoveFraction) * MoveDelay;
+            }
+
+            Position = new Vector(Position.X + movement.X, Position.Y + movement.Y);
             EmitNewPositionNotification();
+        }
+
+        public CollisionInfo Collide(ICollisionObject collidingObject, IVector movement)
+        {
+            return new CollisionInfo();
         }
     }
 }

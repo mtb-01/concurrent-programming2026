@@ -31,6 +31,8 @@ namespace Project.Logic
 
         public abstract List<IBall> GetBalls();
 
+        internal abstract ICollisionObject GetArea();
+
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;
 

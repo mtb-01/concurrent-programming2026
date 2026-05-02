@@ -8,13 +8,15 @@ namespace Project.Logic
         public int InitialBallCount { get; init; }
 
         private readonly List<Ball> listOfBalls = new List<Ball>();
+        private readonly Area area;
         private bool isStarted = false;
         private double moveDelay;
         private DataAbstractAPI data;
 
-        public LogicImplementation (int initialBallCount, DataAbstractAPI? data = null)
+        public LogicImplementation (int initialBallCount, double areaX, double areaY, DataAbstractAPI? data = null)
         {
             InitialBallCount = initialBallCount;
+            area = new Area(areaX, areaY);
 
             if (data == null)
                 data = DataAbstractAPI.GetDataLayer();
@@ -24,7 +26,7 @@ namespace Project.Logic
             {
                 IVector position = new Vector(dataBall.Position.X, dataBall.Position.Y);
                 IVector velocity = new Vector(dataBall.Velocity.X, dataBall.Velocity.Y);
-                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference);
+                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference, this);
                 AddBall(ball);
             };
 
@@ -96,6 +98,11 @@ namespace Project.Logic
         public override List<IBall> GetBalls()
         {
             return new List<IBall>(listOfBalls);
+        }
+
+        internal override ICollisionObject GetArea()
+        {
+            return area;
         }
     }
 }

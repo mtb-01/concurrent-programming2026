@@ -39,8 +39,8 @@ internal class Ball : IBall
 
     public Ball(double positionX, double positionY, double mass, double circumference, ILogicBall logicBall)
     {
-        PositionX = positionX;
-        PositionY = positionY;
+        PositionX = positionX - circumference/2;
+        PositionY = positionY - circumference/2;
         Mass = mass;
         Circumference = circumference;
         logicBall.NewPositionNotification += OnNewPositionNotification;
@@ -48,8 +48,8 @@ internal class Ball : IBall
 
     private void OnNewPositionNotification(object? sender, IVector newPosition)
     {
-        PositionX = newPosition.X;
-        PositionY = newPosition.Y;
+        PositionX = newPosition.X - Circumference/2;
+        PositionY = newPosition.Y - Circumference/2;
     }
 
     private void RaisePropertyChanged([CallerMemberName] string propertyName = "")

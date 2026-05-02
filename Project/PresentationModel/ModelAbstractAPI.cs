@@ -9,8 +9,11 @@ public abstract class ModelAbstractAPI
     {
         return new ModelImplementation();
     }
-
+    public abstract void CreateBall();
+    public abstract void ClearBalls();
     public abstract void Start();
+    public abstract void Stop();
+    public abstract void Quit();
 
     public event EventHandler<IBall>? BallAddedNotification;
     public event EventHandler? BallsClearedNotification;

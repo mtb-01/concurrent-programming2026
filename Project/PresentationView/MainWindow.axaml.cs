@@ -10,7 +10,6 @@ public partial class MainWindow : Window
     {
         IDataLayerFactory dataLayerFactory = new DataImplementationFactory()
         {
-            NumberOfBalls = 8,
             XPositionRange = VectorFactory.Get(0, 400),
             YPositionRange = VectorFactory.Get(0, 400),
             XVelocityRange = VectorFactory.Get(-20, 20),
@@ -22,7 +21,7 @@ public partial class MainWindow : Window
 
         MainWindowViewModel viewModel = new MainWindowViewModel();
         DataContext = viewModel;
-        viewModel.Start();
+        viewModel.StartCommand();
         InitializeComponent();
     }
 }

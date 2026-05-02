@@ -48,4 +48,12 @@
         </ItemsControl>
     </Border>
 
+    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding StartCommand}">Start</Button>
+    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding StopCommand}">Stop</Button>
+    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding QuitCommand}">Quit</Button>
+    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding ClearBallsCommand}">Clear balls</Button>
+    <Button HorizontalAlignment="Right" ClickMode="Press" Command="{Binding CreateBallCommand}">Create a random ball</Button>
+
+    <!-- <TextBlock Text="Number of balls: {Binding NumberOfBalls}" HorizontalAlignment="Left" VerticalAlignment="Up"/>
+-->
 </Window>

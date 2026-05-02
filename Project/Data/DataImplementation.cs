@@ -5,7 +5,6 @@ namespace Project.Data
 {
     internal class DataImplementation : DataAbstractAPI
     {
-        required public int NumberOfBalls { get; set; }
         required public IVector XPositionRange { get; set; }
         required public IVector YPositionRange { get; set; }
         required public IVector XVelocityRange { get; set; }
@@ -39,9 +38,9 @@ namespace Project.Data
             return rangeStart + (rangeEnd - rangeStart) * random.NextDouble();
         }
 
-        public override void Load()
+        public override void Load(int count)
         {
-            for (int i = 0; i < NumberOfBalls; i++)
+            for (int i = 0; i < count; i++)
             {
                 double valuePosX = GetRandomInRange(XPositionRange.X, XPositionRange.Y);
                 double valuePosY = GetRandomInRange(YPositionRange.X, YPositionRange.Y);

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Project.Data.Test
@@ -8,7 +9,6 @@ namespace Project.Data.Test
         [TestMethod]
         public void ConstructorTestMethod()
         {
-            int balls = 10;
             IVector xPositionRange = new Vector(-10.0, 10.0);
             IVector yPositionRange = new Vector(-10.0, 10.0);
             IVector xVelocityRange = new Vector(-10.0, 10.0);
@@ -18,7 +18,6 @@ namespace Project.Data.Test
 
             DataImplementation data = new DataImplementation()
             {
-                NumberOfBalls = balls,
                 XPositionRange = xPositionRange,
                 YPositionRange = yPositionRange,
                 XVelocityRange = xVelocityRange,
@@ -27,7 +26,6 @@ namespace Project.Data.Test
                 CircumferenceRange = circumferenceRange
             };
 
-            Assert.AreEqual<double>(balls, data.NumberOfBalls);
             Assert.AreEqual<IVector>(xPositionRange, data.XPositionRange);
             Assert.AreEqual<IVector>(yPositionRange, data.YPositionRange);
             Assert.AreEqual<IVector>(xVelocityRange, data.XVelocityRange);
@@ -44,7 +42,6 @@ namespace Project.Data.Test
 
             DataImplementation data = new DataImplementation()
             {
-                NumberOfBalls = balls,
                 XPositionRange = range,
                 YPositionRange = range,
                 XVelocityRange = range,
@@ -67,7 +64,7 @@ namespace Project.Data.Test
 
             Assert.AreEqual(0, data.GetBalls().Count);
 
-            data.Load();
+            data.Load(balls);
 
             Assert.AreEqual(balls, data.GetBalls().Count);
         }

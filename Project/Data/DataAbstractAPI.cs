@@ -21,13 +21,16 @@ namespace Project.Data
 
         public abstract void Save();
 
-        public abstract void Load();
+        public abstract void Load(int count);
 
         public abstract List<IBall> GetBalls();
 
         public abstract void ClearBalls();
 
         public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference);
+        public event EventHandler<IBall>? BallAddedNotification;
+        public event EventHandler? BallsClearedNotification;
+
     }
 
     public interface IDataLayerFactory

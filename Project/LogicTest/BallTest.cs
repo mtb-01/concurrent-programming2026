@@ -12,10 +12,12 @@ public class BallTest
         Vector position = new Vector(10, 10);
         Vector velocity = new Vector(10, 10);
         double moveDelay = 1;
-        Ball ball = new Ball(position, velocity, 10, 10, moveDelay);
+        Ball ball = new Ball(position, velocity, 10, 10)
+        {
+            MoveDelay = moveDelay
+        };
         Assert.AreEqual(position, ball.Position);
         Assert.AreEqual(velocity, ball.Velocity);
-        Assert.AreEqual(moveDelay, ball.MoveDelay);
         
         ball.Simulate(null);
 

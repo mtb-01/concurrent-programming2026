@@ -34,7 +34,6 @@ namespace Project.Logic.Test
 
     internal class TestDataImplementation : DataAbstractAPI
     {
-        required public int NumberOfBalls { get; set; }
         public TestDataImplementation() { }
         private List<IDataBall> listOfBalls = new List<IDataBall>();
 
@@ -42,9 +41,9 @@ namespace Project.Logic.Test
         {
             return new List<IDataBall>(listOfBalls);
         }
-        public override void Load()
+        public override void Load(int count)
         {
-            for (int i = 0; i < NumberOfBalls; i++)
+            for (int i = 0; i < count; i++)
             {
                 double valuePosX = 10.0;
                 double valuePosY = 10.0;
@@ -67,6 +66,7 @@ namespace Project.Logic.Test
         {
             TestDataBall ball = new(initialPosition, initialVelocity, mass, circumference);
             listOfBalls.Add(ball);
+            RaiseBallAddedNotification(ball);
         }
     }
 
@@ -78,12 +78,9 @@ namespace Project.Logic.Test
         {
             int balls = 3;
 
-            TestDataImplementation data = new TestDataImplementation()
-            {
-                NumberOfBalls = balls
-            };
+            TestDataImplementation data = new TestDataImplementation();
 
-            LogicImplementation logic = new LogicImplementation(data);
+            LogicImplementation logic = new LogicImplementation(balls, data);
             double delay = 10;
             logic.Start(delay);
 

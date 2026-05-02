@@ -28,8 +28,19 @@ namespace Project.Data
         public abstract void ClearBalls();
 
         public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference);
+
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;
+        
+        protected void RaiseBallAddedNotification(IBall ball)
+        {
+            BallAddedNotification?.Invoke(this, ball);
+        }
+
+        protected void RaiseBallsClearedNotification()
+        {
+            BallsClearedNotification?.Invoke(this, EventArgs.Empty);
+        }
 
     }
 

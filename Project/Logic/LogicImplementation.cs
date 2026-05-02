@@ -1,38 +1,96 @@
 using System.Collections.Generic;
 using Project.Data;
-using IDataBall = Project.Data.IBall;
 
 namespace Project.Logic
 {
     internal class LogicImplementation : LogicAbstractAPI
     {
-        private readonly List<IBall> listOfBalls = new List<IBall>();
+        public int InitialBallCount { get; init; }
+
+        private readonly List<Ball> listOfBalls = new List<Ball>();
+        private bool isStarted = false;
+        private double moveDelay;
         private DataAbstractAPI data;
 
-        public LogicImplementation (DataAbstractAPI? data = null)
+        public LogicImplementation (int initialBallCount, DataAbstractAPI? data = null)
         {
+            InitialBallCount = initialBallCount;
+
             if (data == null)
                 data = DataAbstractAPI.GetDataLayer();
             this.data = data;
+
+            data.BallAddedNotification += (sender, dataBall) =>
+            {
+                IVector position = new Vector(dataBall.Position.X, dataBall.Position.Y);
+                IVector velocity = new Vector(dataBall.Velocity.X, dataBall.Velocity.Y);
+                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference);
+                AddBall(ball);
+            };
+
+            // ?
+            data.BallsClearedNotification += (sender, args) =>
+            {
+                
+            };
+
+            data.Load(InitialBallCount);
         }
 
         public override void Start(double moveDelay)
         {
-            data.Load();
-            foreach(IDataBall dataBall in data.GetBalls())
+            if (isStarted)
+                return;
+
+            this.moveDelay = moveDelay;
+            foreach(Ball ball in listOfBalls)
             {
-                IVector position = new Vector(dataBall.Position.X, dataBall.Position.Y);
-                IVector velocity = new Vector(dataBall.Velocity.X, dataBall.Velocity.Y);
-                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference, moveDelay);
+                ball.Stop();
+                ball.MoveDelay = moveDelay;
                 ball.Start();
-                AddBall(ball);
             }
+            isStarted = true;
         }
 
-        private void AddBall(IBall ball)
+        public override void Stop()
+        {
+            if (!isStarted)
+                return;
+
+            foreach(Ball ball in listOfBalls)
+            {
+                ball.Stop();
+            }
+            isStarted = false;
+        }
+
+        public override bool IsStarted()
+        {
+            return isStarted;
+        }
+
+        public override void CreateBall()
+        {
+            data.Load(1);
+        }
+
+        public override void ClearBalls()
+        {
+            data.ClearBalls();
+            // ?
+            listOfBalls.Clear();
+            RaiseBallsClearedNotification();
+        }
+
+        private void AddBall(Ball ball)
         {
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
+            if (isStarted)
+            {
+                ball.MoveDelay = moveDelay;
+                ball.Start();
+            }
         }
 
         public override List<IBall> GetBalls()

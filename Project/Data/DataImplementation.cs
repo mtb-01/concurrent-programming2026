@@ -20,6 +20,7 @@ namespace Project.Data
         {
             Ball ball = new(initialPosition, initialVelocity, mass, circumference);
             listOfBalls.Add(ball);
+            RaiseBallAddedNotification(ball);
         }
 
         public override void ClearBalls()

@@ -14,25 +14,33 @@ namespace Project.Logic
             get;
             set
             {
-                Stop();
-                field = value;
+                if (!isStarted())
+                {
+                    field = value;
+                }
             }
         }
 
         private Timer? moveTimer;
 
-        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference, double moveDelay)
+        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
             Mass = mass;
             Circumference = circumference;
-            MoveDelay = moveDelay;
+        }
+
+        private bool isStarted()
+        {
+            return moveTimer != null;
         }
 
         internal void Start()
         {
-            Stop();
+            if (isStarted())
+                return;
+            
             moveTimer = new Timer(Simulate, null, TimeSpan.Zero, TimeSpan.FromSeconds(MoveDelay));
         }
 

@@ -5,12 +5,31 @@ namespace Project.Logic
 {
     public abstract class LogicAbstractAPI
     {
+        private static LogicAbstractAPI? logicLayer;
+
+        public static void SetLogicLayer(LogicAbstractAPI logicLayer)
+        {
+            LogicAbstractAPI.logicLayer = logicLayer;
+        }
+
         public static LogicAbstractAPI GetLogicLayer()
         {
-            return new LogicImplementation();
+            if (logicLayer == null)
+                throw new NullReferenceException("No logic layer instance available.");
+            return logicLayer;
         }
 
         public abstract void Start(double moveDelay);
+
+        public abstract void Stop();
+
+        public abstract bool IsStarted();
+
+        public abstract void CreateBall();
+
+        public abstract void ClearBalls();
+
+        public abstract List<IBall> GetBalls();
 
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;
@@ -24,8 +43,11 @@ namespace Project.Logic
         {
             BallsClearedNotification?.Invoke(this, EventArgs.Empty);
         }
+    }
 
-        public abstract List<IBall> GetBalls();
+    public interface ILogicLayerFactory
+    {
+        LogicAbstractAPI Get();
     }
 
     public interface IBall

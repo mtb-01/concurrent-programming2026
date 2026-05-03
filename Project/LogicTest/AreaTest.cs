@@ -1,6 +1,4 @@
 using System;
-using System.Formats.Asn1;
-using Microsoft.Testing.Platform.Extensions.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Project.Logic.Test
@@ -35,10 +33,10 @@ namespace Project.Logic.Test
             CollisionInfo info = area.CollideBall(ball, movement);
 
             Vector movePosition = new Vector(ball.Position.X + movement.X, ball.Position.Y + movement.Y);
-            double intersectionRight = Math.Max(movePosition.X + ball.Circumference/2 - area.SizeX, 0);
-            double intersectionLeft = Math.Min(movePosition.X - ball.Circumference/2, 0);
-            double intersectionBottom = Math.Max(movePosition.Y + ball.Circumference/2 - area.SizeY, 0);
-            double intersectionTop = Math.Min(movePosition.Y - ball.Circumference/2, 0);
+            double intersectionRight = Math.Max(movePosition.X + ball.Diameter/2 - area.SizeX, 0);
+            double intersectionLeft = Math.Min(movePosition.X - ball.Diameter/2, 0);
+            double intersectionBottom = Math.Max(movePosition.Y + ball.Diameter/2 - area.SizeY, 0);
+            double intersectionTop = Math.Min(movePosition.Y - ball.Diameter/2, 0);
 
             Vector intersection = new Vector()
             {

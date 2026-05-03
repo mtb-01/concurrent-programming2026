@@ -7,7 +7,7 @@ public class DataImplementationFactory : IDataLayerFactory
     required public IVector XVelocityRange { get; set; }
     required public IVector YVelocityRange { get; set; }
     required public IVector MassRange { get; set; }
-    required public IVector CircumferenceRange { get; set; }
+    required public IVector DiameterRange { get; set; }
 
     public DataAbstractAPI Get()
     {
@@ -18,7 +18,7 @@ public class DataImplementationFactory : IDataLayerFactory
             XVelocityRange = this.XVelocityRange,
             YVelocityRange = this.YVelocityRange,
             MassRange = this.MassRange,
-            CircumferenceRange = this.CircumferenceRange
+            DiameterRange = this.DiameterRange
         };
     }
 }

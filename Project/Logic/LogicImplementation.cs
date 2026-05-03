@@ -32,7 +32,7 @@ namespace Project.Logic
             {
                 IVector position = new Vector(dataBall.Position.X, dataBall.Position.Y);
                 IVector velocity = new Vector(dataBall.Velocity.X, dataBall.Velocity.Y);
-                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference, this);
+                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Diameter, this);
                 AddBall(ball);
             };
         }

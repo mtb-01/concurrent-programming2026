@@ -18,7 +18,7 @@ internal class ModelImplementation : ModelAbstractAPI
         logicLayer.IsStartedChangedNotification += (sender, isStarted) => RaiseIsStartedChangedNotification(isStarted);
 
         logicLayer.BallAddedNotification += (sender, ball) => RaiseBallAddedNotification(
-                new Ball(ball.Position.X, ball.Position.Y, ball.Mass, ball.Circumference, ball)
+                new Ball(ball.Position.X, ball.Position.Y, ball.Mass, ball.Diameter, ball)
             );
         logicLayer.BallsClearedNotification += (sender, e) => RaiseBallsClearedNotification();
     }

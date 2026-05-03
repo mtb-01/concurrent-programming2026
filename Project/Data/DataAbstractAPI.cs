@@ -27,7 +27,7 @@ namespace Project.Data
 
         public abstract void ClearBalls();
 
-        public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference);
+        public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double diameter);
 
         public event EventHandler<IBall>? BallAddedNotification;
         
@@ -62,6 +62,6 @@ namespace Project.Data
         IVector Position { get; set; }
         IVector Velocity { get; }
         double Mass { get; init; }
-        double Circumference { get; init; }
+        double Diameter { get; init; }
     }
 }

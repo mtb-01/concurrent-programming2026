@@ -16,7 +16,7 @@ public partial class MainWindow : Window
             XVelocityRange = VectorFactory.Get(-200, 200),
             YVelocityRange = VectorFactory.Get(-200, 200),
             MassRange = VectorFactory.Get(10, 20),
-            CircumferenceRange = VectorFactory.Get(10, 20)
+            DiameterRange = VectorFactory.Get(10, 20)
         };
         DataAbstractAPI.SetDataLayer(dataLayerFactory.Get());
 

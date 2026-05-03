@@ -14,7 +14,7 @@ namespace Project.Data.Test
             IVector xVelocityRange = new Vector(-10.0, 10.0);
             IVector yVelocityRange = new Vector(-10.0, 10.0);
             IVector massRange = new Vector(1.0, 10.0);
-            IVector circumferenceRange = new Vector(1.0, 10.0);
+            IVector diameterRange = new Vector(1.0, 10.0);
 
             DataImplementation data = new DataImplementation()
             {
@@ -23,7 +23,7 @@ namespace Project.Data.Test
                 XVelocityRange = xVelocityRange,
                 YVelocityRange = yVelocityRange,
                 MassRange = massRange,
-                CircumferenceRange = circumferenceRange
+                DiameterRange = diameterRange
             };
 
             Assert.AreEqual<IVector>(xPositionRange, data.XPositionRange);
@@ -31,7 +31,7 @@ namespace Project.Data.Test
             Assert.AreEqual<IVector>(xVelocityRange, data.XVelocityRange);
             Assert.AreEqual<IVector>(yVelocityRange, data.YVelocityRange);
             Assert.AreEqual<IVector>(massRange, data.MassRange);
-            Assert.AreEqual<IVector>(circumferenceRange, data.CircumferenceRange);
+            Assert.AreEqual<IVector>(diameterRange, data.DiameterRange);
         }
 
         [TestMethod]
@@ -47,16 +47,16 @@ namespace Project.Data.Test
                 XVelocityRange = range,
                 YVelocityRange = range,
                 MassRange = range,
-                CircumferenceRange = range
+                DiameterRange = range
             };
 
             Assert.AreEqual(0, data.GetBalls().Count);
 
             Vector vector = new Vector(0.0, 0.0);
             double mass = 10;
-            double circumference = 10;
+            double diameter = 10;
 
-            data.AddBall(vector, vector, mass, circumference);
+            data.AddBall(vector, vector, mass, diameter);
 
             Assert.AreEqual(1, data.GetBalls().Count);
 

@@ -67,7 +67,7 @@ namespace Project.Logic
         IVector Position { get; }
         IVector Velocity { get; }
         double Mass { get; init; }
-        double Circumference { get; init; }
+        double Diameter { get; init; }
 
         event EventHandler<IVector>? NewPositionNotification;
     }

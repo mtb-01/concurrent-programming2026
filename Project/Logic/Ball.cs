@@ -8,7 +8,7 @@ namespace Project.Logic
         public IVector Position { get; private set; }
         public IVector Velocity { get; private set; }
         public double Mass { get; init; }
-        public double Circumference { get; init; }
+        public double Diameter { get; init; }
         public double MoveDelay
         { 
             get;
@@ -25,12 +25,12 @@ namespace Project.Logic
 
         private Timer? moveTimer;
 
-        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double circumference, LogicAbstractAPI logic)
+        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double diameter, LogicAbstractAPI logic)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
             Mass = mass;
-            Circumference = circumference;
+            Diameter = diameter;
             this.logic = logic;
         }
 

@@ -10,15 +10,15 @@ namespace Project.Data
         required public IVector XVelocityRange { get; set; }
         required public IVector YVelocityRange { get; set; }
         required public IVector MassRange { get; set; }
-        required public IVector CircumferenceRange { get; set; }
+        required public IVector DiameterRange { get; set; }
 
         private readonly List<IBall> listOfBalls = new List<IBall>();
 
         public DataImplementation () {}
 
-        public override void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double circumference)
+        public override void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double diameter)
         {
-            Ball ball = new(initialPosition, initialVelocity, mass, circumference);
+            Ball ball = new(initialPosition, initialVelocity, mass, diameter);
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
         }
@@ -48,12 +48,12 @@ namespace Project.Data
                 double valueVelX = GetRandomInRange(XVelocityRange.X, XVelocityRange.Y);
                 double valueVelY = GetRandomInRange(YVelocityRange.X, YVelocityRange.Y);
                 double mass = GetRandomInRange(MassRange.X, MassRange.Y);
-                double cir = GetRandomInRange(CircumferenceRange.X, CircumferenceRange.Y);
+                double diameter = GetRandomInRange(DiameterRange.X, DiameterRange.Y);
 
                 Vector pos = new(valuePosX, valuePosY);
                 Vector vel = new(valueVelX, valueVelY);
 
-                AddBall(pos, vel, mass, cir);
+                AddBall(pos, vel, mass, diameter);
             }
         }
 

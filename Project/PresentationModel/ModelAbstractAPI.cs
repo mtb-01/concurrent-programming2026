@@ -53,5 +53,5 @@ public interface IBall : INotifyPropertyChanged
     double PositionX { get; }
     double PositionY { get; }
     double Mass { get; init; }
-    double Circumference { get; init; }
+    double Diameter { get; init; }
 }

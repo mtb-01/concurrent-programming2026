@@ -33,23 +33,23 @@ internal class Ball : IBall
     }
 
     public double Mass { get; init; }
-    public double Circumference { get; init; }
+    public double Diameter { get; init; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public Ball(double positionX, double positionY, double mass, double circumference, ILogicBall logicBall)
+    public Ball(double positionX, double positionY, double mass, double diameter, ILogicBall logicBall)
     {
-        PositionX = positionX - circumference/2;
-        PositionY = positionY - circumference/2;
+        PositionX = positionX - diameter/2;
+        PositionY = positionY - diameter/2;
         Mass = mass;
-        Circumference = circumference;
+        Diameter = diameter;
         logicBall.NewPositionNotification += OnNewPositionNotification;
     }
 
     private void OnNewPositionNotification(object? sender, IVector newPosition)
     {
-        PositionX = newPosition.X - Circumference/2;
-        PositionY = newPosition.Y - Circumference/2;
+        PositionX = newPosition.X - Diameter/2;
+        PositionY = newPosition.Y - Diameter/2;
     }
 
     private void RaisePropertyChanged([CallerMemberName] string propertyName = "")

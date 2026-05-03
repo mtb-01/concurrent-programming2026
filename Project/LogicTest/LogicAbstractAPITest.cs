@@ -22,13 +22,13 @@ namespace Project.Logic.Test
         public IDataVector Position { get; set; }
         public IDataVector Velocity { get; }
         public double Mass { get; init; }
-        public double Circumference { get; init; }
-        public TestDataBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double circumference)
+        public double Diameter { get; init; }
+        public TestDataBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double diameter)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
             Mass = mass;
-            Circumference = circumference;
+            Diameter = diameter;
         }
     }
 
@@ -41,7 +41,7 @@ namespace Project.Logic.Test
         {
             return new List<IDataBall>(listOfBalls);
         }
-        public override void Load(int count = 3)
+        public override void Load(int count)
         {
             for (int i = 0; i < count; i++)
             {
@@ -50,21 +50,21 @@ namespace Project.Logic.Test
                 double valueVelX = 10.0;
                 double valueVelY = 10.0;
                 double mass = 10.0;
-                double cir = 10.0;
+                double diameter = 10.0;
 
                 TestDataVector pos = new(valuePosX, valuePosY);
                 TestDataVector vel = new(valueVelX, valueVelY);
 
-                AddBall(pos, vel, mass, cir);
+                AddBall(pos, vel, mass, diameter);
             }
         }
         public override void ClearBalls() { }
 
         public override void Save() { }
 
-        public override void AddBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double circumference)
+        public override void AddBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double diameter)
         {
-            TestDataBall ball = new(initialPosition, initialVelocity, mass, circumference);
+            TestDataBall ball = new(initialPosition, initialVelocity, mass, diameter);
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
         }
@@ -97,14 +97,12 @@ namespace Project.Logic.Test
         [TestMethod]
         public void ConstructorTestMethod()
         {
-            int balls = 3;
             TestDataImplementation data = new TestDataImplementation();
             double X = 10;
             double Y = 10;
             Vector size = new Vector(10, 10);
             ICollisionObject area = new Area(X, Y);
             LogicImplementation logic = new LogicImplementation(X, Y, data);
-            logic.StartLayer(balls);
 
             Assert.AreEqual(size, logic.GetAreaSize());
         }

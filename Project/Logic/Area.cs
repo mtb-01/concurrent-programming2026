@@ -26,10 +26,10 @@ internal class Area : ICollisionObject
     public CollisionInfo CollideBall(IBall collidingBall, IVector movement)
     {
         Vector movePosition = new Vector(collidingBall.Position.X + movement.X, collidingBall.Position.Y + movement.Y);
-        double intersectionRight = Math.Max(movePosition.X + collidingBall.Circumference/2 - SizeX, 0);
-        double intersectionLeft = Math.Min(movePosition.X - collidingBall.Circumference/2, 0);
-        double intersectionBottom = Math.Max(movePosition.Y + collidingBall.Circumference/2 - SizeY, 0);
-        double intersectionTop = Math.Min(movePosition.Y - collidingBall.Circumference/2, 0);
+        double intersectionRight = Math.Max(movePosition.X + collidingBall.Diameter/2 - SizeX, 0);
+        double intersectionLeft = Math.Min(movePosition.X - collidingBall.Diameter/2, 0);
+        double intersectionBottom = Math.Max(movePosition.Y + collidingBall.Diameter/2 - SizeY, 0);
+        double intersectionTop = Math.Min(movePosition.Y - collidingBall.Diameter/2, 0);
 
         Vector intersection = new Vector()
         {

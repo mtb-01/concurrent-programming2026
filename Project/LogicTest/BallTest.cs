@@ -11,6 +11,11 @@ internal class TestLogicImplementation : LogicAbstractAPI
     public override void ClearBalls() {}
     public override void CreateBall() {}
 
+    public override IVector GetAreaSize()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override List<IBall> GetBalls()
     {
         throw new System.NotImplementedException();
@@ -22,6 +27,12 @@ internal class TestLogicImplementation : LogicAbstractAPI
     }
 
     public override void Start(double moveDelay) {}
+
+    public override void StartLayer(int initialBallCount)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Stop() {}
 
     internal override ICollisionObject GetArea()

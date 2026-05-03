@@ -41,7 +41,7 @@ namespace Project.Logic.Test
         {
             return new List<IDataBall>(listOfBalls);
         }
-        public override void Load(int count)
+        public override void Load(int count = 3)
         {
             for (int i = 0; i < count; i++)
             {
@@ -80,7 +80,9 @@ namespace Project.Logic.Test
 
             TestDataImplementation data = new TestDataImplementation();
 
-            LogicImplementation logic = new LogicImplementation(balls, 100, 100, data);
+            LogicImplementation logic = new LogicImplementation(100, 100, data);
+            logic.StartLayer(balls);
+
             Assert.AreEqual(balls, logic.GetBalls().Count);
             Assert.IsFalse(logic.IsStarted());
 
@@ -90,6 +92,39 @@ namespace Project.Logic.Test
             
             logic.Stop();
             Assert.IsFalse(logic.IsStarted());
+        }
+
+        [TestMethod]
+        public void ConstructorTestMethod()
+        {
+            int balls = 3;
+            TestDataImplementation data = new TestDataImplementation();
+            double X = 10;
+            double Y = 10;
+            Vector size = new Vector(10, 10);
+            ICollisionObject area = new Area(X, Y);
+            LogicImplementation logic = new LogicImplementation(X, Y, data);
+            logic.StartLayer(balls);
+
+            Assert.AreEqual(size, logic.GetAreaSize());
+        }
+
+        [TestMethod]
+        public void BallOperationsTestMethod()
+        {
+            int balls = 3;
+            TestDataImplementation data = new TestDataImplementation();
+            double X = 10;
+            double Y = 10;
+            LogicImplementation logic = new LogicImplementation(X, Y, data);
+            logic.StartLayer(balls);
+
+            Assert.AreEqual(balls, logic.GetBalls().Count);
+            logic.CreateBall();
+            Assert.AreEqual(balls+1, logic.GetBalls().Count);
+
+            logic.ClearBalls();
+            Assert.AreEqual(0, logic.GetBalls().Count);
         }
     }
 }

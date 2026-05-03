@@ -8,6 +8,8 @@
         Title="Project"
         Height="500"
 		Width="500"
+        MinHeight="300"
+        MinWidth="300"
         x:CompileBindings="true"
         x:DataType="vm:MainWindowViewModel"
         mc:Ignorable="d">
@@ -15,20 +17,11 @@
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-
-    <!-- <ListBox ItemsSource="{Binding Balls}">
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Border BorderBrush="Blue" BorderThickness="1" 
-                        CornerRadius="4" Padding="4">
-                    <TextBlock Text="{Binding PositionX}"/>
-                </Border>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox> -->
     
     <DockPanel VerticalAlignment="Center" VerticalSpacing="10" Margin="20">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4" DockPanel.Dock="Top">
+            <TextBlock Text="Initial ball count:" VerticalAlignment="Center"/>
+            <NumericUpDown Value="{Binding InitialBallCount}" Minimum="1" Maximum="100" FormatString="0" IsEnabled="{Binding IsInitializing}"/>
             <Button ClickMode="Press" Command="{Binding StartCommand}">Start</Button>
             <Button ClickMode="Press" Command="{Binding StopCommand}">Stop</Button>
             <Button ClickMode="Press" Command="{Binding CreateBallCommand}">Create ball</Button>
@@ -38,7 +31,7 @@
         <TextBlock Text="{Binding NumberOfBalls}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
         <TextBlock Text="Number of balls: " HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
         <Viewbox>
-            <Border BorderThickness="4" BorderBrush="Black" Height="400" Width="400">
+            <Border BorderThickness="{Binding AreaBorder}" BorderBrush="Black" Width="{Binding AreaX}" Height="{Binding AreaY}">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

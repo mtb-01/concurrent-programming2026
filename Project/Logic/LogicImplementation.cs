@@ -8,7 +8,15 @@ namespace Project.Logic
         private readonly List<Ball> listOfBalls = new List<Ball>();
         private readonly Area area;
         private bool isLayerStarted = false;
-        private bool isStarted = false;
+        private bool isStarted
+        {
+            get;
+            set
+            {
+                field = value;
+                RaiseIsStartedChangedNotification(value);
+            }
+        }
         private double moveDelay;
         private DataAbstractAPI data;
 
@@ -34,12 +42,13 @@ namespace Project.Logic
             if (isLayerStarted)
                 return;
 
+            isLayerStarted = true;
             data.Load(initialBallCount);
         }
 
         public override void Start(double moveDelay)
         {
-            if (isStarted)
+            if (isStarted || !isLayerStarted)
                 return;
 
             this.moveDelay = moveDelay;
@@ -54,7 +63,7 @@ namespace Project.Logic
 
         public override void Stop()
         {
-            if (!isStarted)
+            if (!isStarted || !isLayerStarted)
                 return;
 
             foreach(Ball ball in listOfBalls)
@@ -71,11 +80,17 @@ namespace Project.Logic
 
         public override void CreateBall()
         {
+            if (!isLayerStarted)
+                return;
+            
             data.Load(1);
         }
 
         public override void ClearBalls()
         {
+            if (!isLayerStarted)
+                return;
+
             data.ClearBalls();
             listOfBalls.Clear();
             RaiseBallsClearedNotification();
@@ -83,6 +98,9 @@ namespace Project.Logic
 
         private void AddBall(Ball ball)
         {
+            if (!isLayerStarted)
+                return;
+
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
             if (isStarted)

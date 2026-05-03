@@ -11,10 +11,10 @@ public partial class MainWindow : Window
     {
         IDataLayerFactory dataLayerFactory = new DataImplementationFactory()
         {
-            XPositionRange = VectorFactory.Get(0, 400),
-            YPositionRange = VectorFactory.Get(0, 400),
-            XVelocityRange = VectorFactory.Get(-20, 20),
-            YVelocityRange = VectorFactory.Get(-20, 20),
+            XPositionRange = VectorFactory.Get(10, 390),
+            YPositionRange = VectorFactory.Get(10, 390),
+            XVelocityRange = VectorFactory.Get(-200, 200),
+            YVelocityRange = VectorFactory.Get(-200, 200),
             MassRange = VectorFactory.Get(10, 20),
             CircumferenceRange = VectorFactory.Get(10, 20)
         };
@@ -22,16 +22,13 @@ public partial class MainWindow : Window
 
         ILogicLayerFactory logicLayerFactory = new LogicImplementationFactory()
         {
-            AreaX = 399,
-            AreaY = 399,
-            InitialBallCount = 10 //viewModel.InitialBalls
+            AreaX = 400,
+            AreaY = 400
         };
         LogicAbstractAPI.SetLogicLayer(logicLayerFactory.Get());
         
         MainWindowViewModel viewModel = new MainWindowViewModel();
         DataContext = viewModel;
-        //viewModel.StartFlyout();
-        viewModel.StartLayer();
         InitializeComponent();
     }
 }

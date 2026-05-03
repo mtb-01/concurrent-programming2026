@@ -37,8 +37,14 @@ namespace Project.Logic
 
         internal abstract ICollisionObject GetArea();
 
+        public event EventHandler<bool>? IsStartedChangedNotification;
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;
+
+        protected void RaiseIsStartedChangedNotification(bool isStarted)
+        {
+            IsStartedChangedNotification?.Invoke(this, isStarted);
+        }
 
         protected void RaiseBallAddedNotification(IBall ball)
         {

@@ -7,71 +7,129 @@ namespace Project.Presentation.ViewModel;
 
 public class ClickCommand : ICommand
 {
-    public event EventHandler CanExecuteChanged;
-    private readonly Predicate<object> canExecute;
-    private readonly Action<object> execute;
-    public ClickCommand(Predicate<object> canExecute, Action<object> execute)
+    public event EventHandler? CanExecuteChanged;
+
+    private readonly Predicate<object?> canExecute;
+    private readonly Action<object?> execute;
+    public ClickCommand(Predicate<object?> canExecute, Action<object?> execute, Action<EventHandler>? canExecuteChangedSubscribe = null)
     {
         this.canExecute = canExecute;
         this.execute = execute;
+
+        canExecuteChangedSubscribe?.Invoke((sender, args) => RaiseCanExecuteChanged());
     }
 
-    public bool CanExecute(object parameter)
+    public ClickCommand(Predicate<object?> canExecute, Action<object?> execute, Action<EventHandler<bool>> canExecuteChangedSubscribe)
+    {
+        this.canExecute = canExecute;
+        this.execute = execute;
+
+        canExecuteChangedSubscribe.Invoke((sender, args) => RaiseCanExecuteChanged());
+    }
+
+    public bool CanExecute(object? parameter)
     {
         return canExecute(parameter);
     }
     
-    public void Execute(object parameter)
+    public void Execute(object? parameter)
     {
         execute(parameter);
     }
 
+    private void RaiseCanExecuteChanged()
+    {
+        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    }
 }
 
 public class MainWindowViewModel : ViewModelBase
 {
-    protected readonly ModelAbstractAPI modelLayer;
-    public ObservableCollection<IBall> Balls { get; } = new ObservableCollection<IBall>();
-    public ICommand CreateBallCommand { get; private set; }
-    public ICommand ClearBallsCommand { get; private set; }
-    public ICommand StartCommand { get; private set; }
-    public ICommand StopCommand { get; private set; }
-    public ICommand QuitCommand { get; private set; }
-    public ICommand FlyoutCommand { get; private set; }
-    public int NumberOfBalls { get; set; }
-    public int InitialBalls { get; set; }
+    private readonly ModelAbstractAPI modelLayer;
 
-    public MainWindowViewModel(ModelAbstractAPI modelLayer = null)
+    public ObservableCollection<IBall> Balls { get; } = new ObservableCollection<IBall>();
+    public ICommand CreateBallCommand { get; init; }
+    public ICommand ClearBallsCommand { get; init; }
+    public ICommand StartCommand 
+    {
+        get;
+        private set
+        {
+            field = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public ICommand StopCommand { get; init; }
+    public ICommand QuitCommand { get; init; }
+    public decimal InitialBallCount { get; set; }
+    public int NumberOfBalls
+    {
+        get;
+        private set
+        {
+            field = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public bool IsInitializing => !modelLayer.IsInitialized();
+    public double AreaX => modelLayer.GetAreaX();
+    public double AreaY => modelLayer.GetAreaY();
+
+    public Avalonia.Thickness AreaBorder
+    {
+        get
+        {
+            return new Avalonia.Thickness(modelLayer.GetAreaBorder());
+        }
+    }
+
+    public MainWindowViewModel(ModelAbstractAPI? modelLayer = null)
     {
         if (modelLayer == null)
             modelLayer = ModelAbstractAPI.GetModelLayer();
         this.modelLayer = modelLayer;
 
-        modelLayer.BallAddedNotification += (sender, ball) => Balls.Add(ball);
-        modelLayer.BallsClearedNotification += (sender, e) => Balls.Clear();
-        CreateBallCommand = new ClickCommand(p => predicateFun(), p => modelLayer.CreateBall());
-        ClearBallsCommand = new ClickCommand(p => predicateFun(), p => modelLayer.ClearBalls());
-        StartCommand = new ClickCommand(p => predicateFun(), p => modelLayer.Start());
-        StopCommand = new ClickCommand(p => predicateFun(), p => modelLayer.Stop());
-        QuitCommand = new ClickCommand(p => predicateFun(), p => modelLayer.Quit());
-        //FlyoutCommand = new ClickCommand(p => predicateFun(), p => FLYOUT WLACZONY);
-        NumberOfBalls = Balls.Count;
-        InitialBalls = 0;
+        modelLayer.BallAddedNotification += (sender, ball) => {
+            Balls.Add(ball);
+            NumberOfBalls += 1;
+        };
+        modelLayer.BallsClearedNotification += (sender, e) => {
+            Balls.Clear();
+            NumberOfBalls = 0;
+        };
+        modelLayer.InitializedNotification += (sender, e) => RaisePropertyChanged(nameof(IsInitializing));
+
+        CreateBallCommand = new ClickCommand(
+            p => modelLayer.IsInitialized(),
+            p => modelLayer.CreateBall(),
+            handler => modelLayer.InitializedNotification += handler
+        );
+        ClearBallsCommand = new ClickCommand(
+            p => modelLayer.IsInitialized(),
+            p => modelLayer.ClearBalls(),
+            handler => modelLayer.InitializedNotification += handler
+        );
+        StartCommand = new ClickCommand(p => true, p => Initialize());
+        StopCommand = new ClickCommand(
+            p => modelLayer.IsStarted(),
+            p => modelLayer.Stop(),
+            handler => modelLayer.IsStartedChangedNotification += handler
+        );
+        QuitCommand = new ClickCommand(p => true, p => modelLayer.Quit());
+        InitialBallCount = 10;
     }
 
-    public bool predicateFun()
+    private void Initialize()
     {
-        return true;
-    }
-
-    public void StartLayer()
-    {
-        modelLayer.StartLayer();
-    }
-
-    public ICommand StartFlyout()
-    {
-        return FlyoutCommand;
+        modelLayer.Initialize((int)InitialBallCount);
+        modelLayer.Start();
+        StartCommand = new ClickCommand(
+            p => !modelLayer.IsStarted(),
+            p => modelLayer.Start(),
+            handler => modelLayer.IsStartedChangedNotification += handler
+        );
     }
 }
 

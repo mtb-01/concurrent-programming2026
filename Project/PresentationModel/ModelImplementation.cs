@@ -19,6 +19,12 @@ internal class ModelImplementation : ModelAbstractAPI
         logicLayer.BallsClearedNotification += (sender, e) => RaiseBallsClearedNotification();
     }
 
+
+    public override void StartLogicLayer(int initialBallCount)
+    {
+        logicLayer.StartLayer(initialBallCount);
+    }
+
     public override void ClearBalls()
     {
         logicLayer.ClearBalls();
@@ -44,8 +50,13 @@ internal class ModelImplementation : ModelAbstractAPI
         logicLayer.Stop();
     }
 
-    public override void StartLayer()
+    public override double GetAreaX()
     {
-        logicLayer.StartLayer();
+        return logicLayer.GetAreaSize().X;
+    }
+
+    public override double GetAreaY()
+    {
+        return logicLayer.GetAreaSize().Y;
     }
 }

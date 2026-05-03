@@ -5,17 +5,15 @@ namespace Project.Logic
 {
     internal class LogicImplementation : LogicAbstractAPI
     {
-        public int InitialBallCount { get; init; }
-
         private readonly List<Ball> listOfBalls = new List<Ball>();
         private readonly Area area;
+        private bool isLayerStarted = false;
         private bool isStarted = false;
         private double moveDelay;
         private DataAbstractAPI data;
 
-        public LogicImplementation (int initialBallCount, double areaX, double areaY, DataAbstractAPI? data = null)
+        public LogicImplementation (double areaX, double areaY, DataAbstractAPI? data = null)
         {
-            InitialBallCount = initialBallCount;
             area = new Area(areaX, areaY);
 
             if (data == null)
@@ -29,12 +27,14 @@ namespace Project.Logic
                 Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Circumference, this);
                 AddBall(ball);
             };
+        }
 
-            // ?
-            data.BallsClearedNotification += (sender, args) =>
-            {
-                
-            };
+        public override void StartLayer(int initialBallCount)
+        {
+            if (isLayerStarted)
+                return;
+
+            data.Load(initialBallCount);
         }
 
         public override void Start(double moveDelay)
@@ -77,7 +77,6 @@ namespace Project.Logic
         public override void ClearBalls()
         {
             data.ClearBalls();
-            // ?
             listOfBalls.Clear();
             RaiseBallsClearedNotification();
         }
@@ -98,14 +97,14 @@ namespace Project.Logic
             return new List<IBall>(listOfBalls);
         }
 
+        public override IVector GetAreaSize()
+        {
+            return new Vector(area.SizeX, area.SizeY);
+        }
+
         internal override ICollisionObject GetArea()
         {
             return area;
-        }
-
-        public override void StartLayer()
-        {
-            data.Load(InitialBallCount);
         }
     }
 }

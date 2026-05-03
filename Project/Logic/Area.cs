@@ -4,13 +4,13 @@ namespace Project.Logic;
 
 internal class Area : ICollisionObject
 {
-    private double sizeX;
-    private double sizeY;
+    public double SizeX { get; init; }
+    public double SizeY { get; init; }
 
     public Area(double sizeX, double sizeY)
     {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+        SizeX = sizeX;
+        SizeY = sizeY;
     }
 
     public CollisionInfo Collide(ICollisionObject collidingObject, IVector movement)
@@ -26,9 +26,9 @@ internal class Area : ICollisionObject
     public CollisionInfo CollideBall(IBall collidingBall, IVector movement)
     {
         Vector movePosition = new Vector(collidingBall.Position.X + movement.X, collidingBall.Position.Y + movement.Y);
-        double intersectionRight = Math.Max(movePosition.X + collidingBall.Circumference/2 - sizeX, 0);
+        double intersectionRight = Math.Max(movePosition.X + collidingBall.Circumference/2 - SizeX, 0);
         double intersectionLeft = Math.Min(movePosition.X - collidingBall.Circumference/2, 0);
-        double intersectionBottom = Math.Max(movePosition.Y + collidingBall.Circumference/2 - sizeY, 0);
+        double intersectionBottom = Math.Max(movePosition.Y + collidingBall.Circumference/2 - SizeY, 0);
         double intersectionTop = Math.Min(movePosition.Y - collidingBall.Circumference/2, 0);
 
         Vector intersection = new Vector()

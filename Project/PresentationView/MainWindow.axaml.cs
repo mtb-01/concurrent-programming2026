@@ -22,14 +22,15 @@ public partial class MainWindow : Window
 
         ILogicLayerFactory logicLayerFactory = new LogicImplementationFactory()
         {
-            AreaX = 10,
-            AreaY = 10,
-            InitialBallCount = 10
+            AreaX = 399,
+            AreaY = 399,
+            InitialBallCount = 10 //viewModel.InitialBalls
         };
         LogicAbstractAPI.SetLogicLayer(logicLayerFactory.Get());
-
+        
         MainWindowViewModel viewModel = new MainWindowViewModel();
         DataContext = viewModel;
+        //viewModel.StartFlyout();
         viewModel.StartLayer();
         InitializeComponent();
     }

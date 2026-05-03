@@ -37,7 +37,9 @@ public class MainWindowViewModel : ViewModelBase
     public ICommand StartCommand { get; private set; }
     public ICommand StopCommand { get; private set; }
     public ICommand QuitCommand { get; private set; }
-    public int NumberOfBalls;
+    public ICommand FlyoutCommand { get; private set; }
+    public int NumberOfBalls { get; set; }
+    public int InitialBalls { get; set; }
 
     public MainWindowViewModel(ModelAbstractAPI modelLayer = null)
     {
@@ -52,7 +54,9 @@ public class MainWindowViewModel : ViewModelBase
         StartCommand = new ClickCommand(p => predicateFun(), p => modelLayer.Start());
         StopCommand = new ClickCommand(p => predicateFun(), p => modelLayer.Stop());
         QuitCommand = new ClickCommand(p => predicateFun(), p => modelLayer.Quit());
+        //FlyoutCommand = new ClickCommand(p => predicateFun(), p => FLYOUT WLACZONY);
         NumberOfBalls = Balls.Count;
+        InitialBalls = 0;
     }
 
     public bool predicateFun()
@@ -65,5 +69,9 @@ public class MainWindowViewModel : ViewModelBase
         modelLayer.StartLayer();
     }
 
+    public ICommand StartFlyout()
+    {
+        return FlyoutCommand;
+    }
 }
 

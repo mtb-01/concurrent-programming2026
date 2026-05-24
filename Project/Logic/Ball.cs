@@ -120,7 +120,7 @@ namespace Project.Logic
                     }
                     finally { MovementLock.Exit(); }
                 }
-                else
+                else if (ball.ID > ID)
                 {
                     ball.MovementLock.Enter();
                     try
@@ -164,7 +164,29 @@ namespace Project.Logic
 
         private CollisionInfo CollideBall(IBall collidingBall, IVector movement)
         {
-            return new CollisionInfo();
+            double distance = Math.Sqrt(Math.Pow(this.Position.X - collidingBall.Position.X, 2) + Math.Pow(this.Position.Y - collidingBall.Position.Y, 2));
+
+            if (this.Diameter / 2 + collidingBall.Diameter / 2 < distance)
+            {
+                return new CollisionInfo();
+            }
+
+            double massSum = this.Mass + collidingBall.Mass;
+
+            double v1X = collidingBall.Velocity.X * (2*collidingBall.Mass) / massSum + this.Velocity.X * (this.Mass - collidingBall.Mass) / massSum;
+            double v1Y = collidingBall.Velocity.Y * (2*collidingBall.Mass) / massSum + this.Velocity.Y * (this.Mass - collidingBall.Mass) / massSum;
+
+            double v2X = this.Velocity.X * (2*this.Mass) / massSum + collidingBall.Velocity.X * (collidingBall.Mass - this.Mass) / massSum;
+            double v2Y = this.Velocity.Y * (2*this.Mass) / massSum + collidingBall.Velocity.Y * (collidingBall.Mass - this.Mass) / massSum;
+            
+            Vector newVelocityForThis = new Vector(v1X, v1Y);
+            this.Velocity = newVelocityForThis;
+            Vector newVelocity = new Vector(v2X, v2Y);
+
+            
+            double moveFraction = 0;
+
+            return new CollisionInfo(true, moveFraction, newVelocity);
         }
     }
 }

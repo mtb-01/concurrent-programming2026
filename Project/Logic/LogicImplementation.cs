@@ -95,6 +95,11 @@ namespace Project.Logic
             if (!isLayerStarted)
                 return;
 
+            foreach(Ball ball in listOfBalls)
+            {
+                ball.Stop();
+            }
+            
             data.ClearBalls();
             listOfBallsLock.EnterWriteLock();
             try

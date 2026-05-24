@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Project.Data;
 
 namespace Project.Logic
@@ -20,6 +21,9 @@ namespace Project.Logic
         private double moveDelay;
         private DataAbstractAPI data;
 
+        private readonly ReaderWriterLockSlim listOfBallsLock = new ReaderWriterLockSlim();
+
+
         public LogicImplementation (double areaX, double areaY, DataAbstractAPI? data = null)
         {
             area = new Area(areaX, areaY);
@@ -32,7 +36,7 @@ namespace Project.Logic
             {
                 IVector position = new Vector(dataBall.Position.X, dataBall.Position.Y);
                 IVector velocity = new Vector(dataBall.Velocity.X, dataBall.Velocity.Y);
-                Ball ball = new Ball(position, velocity, dataBall.Mass, dataBall.Diameter, this);
+                Ball ball = new Ball(listOfBalls.Count, position, velocity, dataBall.Mass, dataBall.Diameter, this);
                 AddBall(ball);
             };
         }
@@ -92,8 +96,13 @@ namespace Project.Logic
                 return;
 
             data.ClearBalls();
-            listOfBalls.Clear();
-            RaiseBallsClearedNotification();
+            listOfBallsLock.EnterWriteLock();
+            try
+            {
+                listOfBalls.Clear();
+                RaiseBallsClearedNotification();
+            }
+            finally { listOfBallsLock.ExitWriteLock(); }
         }
 
         private void AddBall(Ball ball)
@@ -101,18 +110,33 @@ namespace Project.Logic
             if (!isLayerStarted)
                 return;
 
-            listOfBalls.Add(ball);
-            RaiseBallAddedNotification(ball);
-            if (isStarted)
+            listOfBallsLock.EnterWriteLock();
+            try
             {
-                ball.MoveDelay = moveDelay;
-                ball.Start();
+                listOfBalls.Add(ball);
+                RaiseBallAddedNotification(ball);
+                if (isStarted)
+                {
+                    ball.MoveDelay = moveDelay;
+                    ball.Start();
+                }
             }
+            finally { listOfBallsLock.ExitWriteLock(); }
         }
 
         public override List<IBall> GetBalls()
         {
             return new List<IBall>(listOfBalls);
+        }
+
+        internal override List<Ball> GetLogicBalls()
+        {
+            listOfBallsLock.EnterReadLock();
+            try
+            {
+                return new List<Ball>(listOfBalls);
+            }
+            finally { listOfBallsLock.ExitReadLock(); }
         }
 
         public override IVector GetAreaSize()

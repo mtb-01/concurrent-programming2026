@@ -33,6 +33,8 @@ namespace Project.Logic
 
         public abstract List<IBall> GetBalls();
 
+        internal abstract List<Ball> GetLogicBalls();
+
         public abstract IVector GetAreaSize();
 
         internal abstract ICollisionObject GetArea();
@@ -64,6 +66,7 @@ namespace Project.Logic
 
     public interface IBall
     {
+        int ID { get; }
         IVector Position { get; }
         IVector Velocity { get; }
         double Mass { get; init; }

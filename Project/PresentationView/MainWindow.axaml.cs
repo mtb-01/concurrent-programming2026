@@ -11,7 +11,7 @@ public partial class MainWindow : Window
     {
         IDataLayerFactory dataLayerFactory = new DataImplementationFactory()
         {
-            XPositionRange = VectorFactory.Get(10, 390),
+            XPositionRange = VectorFactory.Get(10, 590),
             YPositionRange = VectorFactory.Get(10, 390),
             XVelocityRange = VectorFactory.Get(-200, 200),
             YVelocityRange = VectorFactory.Get(-200, 200),
@@ -22,7 +22,7 @@ public partial class MainWindow : Window
 
         ILogicLayerFactory logicLayerFactory = new LogicImplementationFactory()
         {
-            AreaX = 400,
+            AreaX = 600,
             AreaY = 400
         };
         LogicAbstractAPI.SetLogicLayer(logicLayerFactory.Get());

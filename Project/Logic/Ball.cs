@@ -5,6 +5,7 @@ namespace Project.Logic
 {
     internal class Ball : IBall, ICollisionObject
     {
+        public int ID { get; private init; }
         public IVector Position { get; private set; }
         public IVector Velocity { get; private set; }
         public double Mass { get; init; }
@@ -21,12 +22,17 @@ namespace Project.Logic
             }
         }
 
+        public Lock MovementLock { get; private init; } = new Lock();
+
         private LogicAbstractAPI logic;
 
-        private Timer? moveTimer;
+        private Thread? mainThread;
+        private CancellationTokenSource? cancelSource;
 
-        public Ball(IVector initialPosition, IVector initialVelocity, double mass, double diameter, LogicAbstractAPI logic)
+
+        public Ball(int id, IVector initialPosition, IVector initialVelocity, double mass, double diameter, LogicAbstractAPI logic)
         {
+            ID = id;
             Position = initialPosition;
             Velocity = initialVelocity;
             Mass = mass;
@@ -36,7 +42,7 @@ namespace Project.Logic
 
         private bool isStarted()
         {
-            return moveTimer != null;
+            return mainThread != null && mainThread.IsAlive;
         }
 
         internal void Start()
@@ -44,16 +50,15 @@ namespace Project.Logic
             if (isStarted())
                 return;
             
-            moveTimer = new Timer(Simulate, null, TimeSpan.Zero, TimeSpan.FromSeconds(MoveDelay));
+            cancelSource = new CancellationTokenSource();
+            mainThread = new Thread(new ThreadStart(
+                () => MainLoop(cancelSource.Token)));
+            mainThread.Start();
         }
 
         internal void Stop()
         {
-            if (moveTimer != null)
-            {
-                moveTimer.Dispose();
-                moveTimer = null;
-            }
+            cancelSource?.Cancel();
         }
 
         public event EventHandler<IVector>? NewPositionNotification;
@@ -63,22 +68,101 @@ namespace Project.Logic
             NewPositionNotification?.Invoke(this, Position);
         }
 
-        internal void Simulate(object? state)
+        private void MainLoop(CancellationToken cancelToken)
         {
-            Vector movement = new Vector(Velocity.X * MoveDelay, Velocity.Y * MoveDelay);
-            CollisionInfo collisionInfo = logic.GetArea().Collide(this, movement);
-            if (collisionInfo.Collided)
+            while(true)
             {
-                movement *= collisionInfo.MoveFraction;
-                Velocity = collisionInfo.NewVelocity;
-                movement += collisionInfo.NewVelocity * (1 - collisionInfo.MoveFraction) * MoveDelay;
+                if (cancelToken.IsCancellationRequested)
+                {
+                    return;
+                }
+                Thread.Sleep(TimeSpan.FromSeconds(MoveDelay));
+                Simulate();
+            }
+        }
+
+        internal void Simulate()
+        {
+            Vector CollideAndReturnRemainder(ICollisionObject collisionObject, Vector movement)
+            {
+                CollisionInfo collisionInfo = collisionObject.Collide(this, movement);
+                if (collisionInfo.Collided)
+                {
+                    movement *= collisionInfo.MoveFraction;
+                    Velocity = collisionInfo.NewVelocity;
+                    Position = new Vector(Position.X + movement.X, Position.Y + movement.Y);
+                    movement = collisionInfo.NewVelocity * (1 - collisionInfo.MoveFraction) * MoveDelay;
+                }
+                return movement;
             }
 
-            Position = new Vector(Position.X + movement.X, Position.Y + movement.Y);
+            Vector movement = new Vector();
+            MovementLock.Enter();
+            try
+            {
+                movement = new Vector(Velocity.X * MoveDelay, Velocity.Y * MoveDelay);
+            }
+            finally { MovementLock.Exit(); }
+
+            foreach (Ball ball in logic.GetLogicBalls())
+            {
+                if (ball.ID < ID)
+                {
+                    MovementLock.Enter();
+                    try
+                    {
+                        ball.MovementLock.Enter();
+                        try
+                        {
+                            movement = CollideAndReturnRemainder(ball, movement);
+                        }
+                        finally { ball.MovementLock.Exit(); }
+                    }
+                    finally { MovementLock.Exit(); }
+                }
+                else
+                {
+                    ball.MovementLock.Enter();
+                    try
+                    {
+                        MovementLock.Enter();
+                        try
+                        {
+                            movement = CollideAndReturnRemainder(ball, movement);
+                        }
+                        finally { MovementLock.Exit(); }
+                    }
+                    finally { ball.MovementLock.Exit(); }
+                }
+                if (movement.Equals(new Vector()))
+                {
+                    EmitNewPositionNotification();
+                    return;
+                }
+            }
+
+            MovementLock.Enter();
+            try
+            {
+                movement = CollideAndReturnRemainder(logic.GetArea(), movement);
+                Position = new Vector(Position.X + movement.X, Position.Y + movement.Y);
+            }
+            finally { MovementLock.Exit(); }
+
             EmitNewPositionNotification();
         }
 
         public CollisionInfo Collide(ICollisionObject collidingObject, IVector movement)
+        {
+            IBall? collidingBall = collidingObject as IBall;
+            if (collidingBall != null)
+            {
+                return CollideBall(collidingBall, movement);
+            }
+            return new CollisionInfo();
+        }
+
+        private CollisionInfo CollideBall(IBall collidingBall, IVector movement)
         {
             return new CollisionInfo();
         }

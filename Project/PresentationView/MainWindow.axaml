@@ -13,6 +13,10 @@
         x:CompileBindings="true"
         x:DataType="vm:MainWindowViewModel"
         mc:Ignorable="d">
+    
+    <Window.Resources>
+        <vm:ColorConverter x:Key="ColorConverter" />
+    </Window.Resources>
 
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -40,7 +44,8 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Fill="#0000ff" Height="{Binding Diameter}" Width="{Binding Diameter}"/>
+                            <Ellipse Fill="{Binding Color, Converter={StaticResource ColorConverter}}"
+                                Height="{Binding Diameter}" Width="{Binding Diameter}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.Styles>

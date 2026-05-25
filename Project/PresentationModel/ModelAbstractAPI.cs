@@ -5,9 +5,18 @@ namespace Project.Presentation.Model;
 
 public abstract class ModelAbstractAPI
 {
+    private static ModelAbstractAPI? modelLayer;
+
+    public static void SetModelLayer(ModelAbstractAPI modelLayer)
+    {
+        ModelAbstractAPI.modelLayer = modelLayer;
+    }
+
     public static ModelAbstractAPI GetModelLayer()
     {
-        return new ModelImplementation();
+        if (modelLayer == null)
+            throw new NullReferenceException("No model layer instance available.");
+        return modelLayer;
     }
 
     public abstract void Initialize(int initialBallCount);
@@ -52,6 +61,11 @@ public interface IBall : INotifyPropertyChanged
 {
     double PositionX { get; }
     double PositionY { get; }
-    double Mass { get; init; }
+    double Color { get; }
     double Diameter { get; init; }
+}
+
+public interface IModelLayerFactory
+{
+    ModelAbstractAPI Get();
 }

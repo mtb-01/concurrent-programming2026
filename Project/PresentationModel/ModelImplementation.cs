@@ -6,6 +6,8 @@ namespace Project.Presentation.Model;
 internal class ModelImplementation : ModelAbstractAPI
 {
     private readonly LogicAbstractAPI logicLayer;
+    public required double MassRangeMin { get; set; }
+    public required double MassRangeMax { get; set; }
 
     private bool isInitialized = false;
 
@@ -18,7 +20,7 @@ internal class ModelImplementation : ModelAbstractAPI
         logicLayer.IsStartedChangedNotification += (sender, isStarted) => RaiseIsStartedChangedNotification(isStarted);
 
         logicLayer.BallAddedNotification += (sender, ball) => RaiseBallAddedNotification(
-                new Ball(ball.Position.X, ball.Position.Y, ball.Mass, ball.Diameter, ball)
+                new Ball(ball.Position.X, ball.Position.Y, Math.Clamp((ball.Mass - MassRangeMin) / (MassRangeMax - MassRangeMin), 0, 1), ball.Diameter, ball)
             );
         logicLayer.BallsClearedNotification += (sender, e) => RaiseBallsClearedNotification();
     }

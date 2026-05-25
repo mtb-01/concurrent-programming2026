@@ -25,7 +25,8 @@ namespace Project.Logic.Test
 
             Vector position = new Vector(9, 9);
             Vector velocity = new Vector(5, 5);
-            Ball ball = new Ball(position, velocity, 10, 10, new TestLogicImplementation());
+            int ID = 1;
+            Ball ball = new Ball(ID, position, velocity, 10, 10, new TestLogicImplementation());
 
             Vector movement = new Vector(3, 3);
             Vector defaultVelocity = new Vector(0, 0);

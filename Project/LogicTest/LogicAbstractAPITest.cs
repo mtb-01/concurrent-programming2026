@@ -23,8 +23,10 @@ namespace Project.Logic.Test
         public IDataVector Velocity { get; }
         public double Mass { get; init; }
         public double Diameter { get; init; }
-        public TestDataBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double diameter)
+        public int id { get; init; }
+        public TestDataBall(int ID, IDataVector initialPosition, IDataVector initialVelocity, double mass, double diameter)
         {
+            ID = id;
             Position = initialPosition;
             Velocity = initialVelocity;
             Mass = mass;
@@ -64,7 +66,7 @@ namespace Project.Logic.Test
 
         public override void AddBall(IDataVector initialPosition, IDataVector initialVelocity, double mass, double diameter)
         {
-            TestDataBall ball = new(initialPosition, initialVelocity, mass, diameter);
+            TestDataBall ball = new(listOfBalls.Count, initialPosition, initialVelocity, mass, diameter);
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
         }

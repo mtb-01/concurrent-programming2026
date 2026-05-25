@@ -11,12 +11,12 @@ public partial class MainWindow : Window
     {
         IDataLayerFactory dataLayerFactory = new DataImplementationFactory()
         {
-            XPositionRange = VectorFactory.Get(10, 590),
-            YPositionRange = VectorFactory.Get(10, 390),
+            XPositionRange = VectorFactory.Get(16, 584),
+            YPositionRange = VectorFactory.Get(16, 384),
             XVelocityRange = VectorFactory.Get(-200, 200),
             YVelocityRange = VectorFactory.Get(-200, 200),
             MassRange = VectorFactory.Get(10, 20),
-            DiameterRange = VectorFactory.Get(10, 20)
+            DiameterRange = VectorFactory.Get(22, 32)
         };
         DataAbstractAPI.SetDataLayer(dataLayerFactory.Get());
 

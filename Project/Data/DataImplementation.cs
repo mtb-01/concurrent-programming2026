@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Project.Data
 {
-    internal class DataImplementation : DataAbstractAPI
+    internal class DataImplementation : DataAbstractAPI, IDisposable
     {
         required public IVector XPositionRange { get; set; }
         required public IVector YPositionRange { get; set; }

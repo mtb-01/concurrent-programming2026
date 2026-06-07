@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Project.Data.Test
@@ -15,6 +14,7 @@ namespace Project.Data.Test
             IVector yVelocityRange = new Vector(-10.0, 10.0);
             IVector massRange = new Vector(1.0, 10.0);
             IVector diameterRange = new Vector(1.0, 10.0);
+            string diagnosticFileName = "test.txt";
 
             DataImplementation data = new DataImplementation()
             {
@@ -23,7 +23,8 @@ namespace Project.Data.Test
                 XVelocityRange = xVelocityRange,
                 YVelocityRange = yVelocityRange,
                 MassRange = massRange,
-                DiameterRange = diameterRange
+                DiameterRange = diameterRange,
+                DiagnosticFileName = diagnosticFileName
             };
 
             Assert.AreEqual<IVector>(xPositionRange, data.XPositionRange);
@@ -32,6 +33,9 @@ namespace Project.Data.Test
             Assert.AreEqual<IVector>(yVelocityRange, data.YVelocityRange);
             Assert.AreEqual<IVector>(massRange, data.MassRange);
             Assert.AreEqual<IVector>(diameterRange, data.DiameterRange);
+            Assert.AreEqual<string>(diagnosticFileName, data.DiagnosticFileName);
+
+            data.Dispose();
         }
 
         [TestMethod]
@@ -39,6 +43,7 @@ namespace Project.Data.Test
         {
             int balls = 3;
             IVector range = new Vector(1.0, 10.0);
+            string diagnosticFileName = "test.txt";
 
             DataImplementation data = new DataImplementation()
             {
@@ -47,7 +52,8 @@ namespace Project.Data.Test
                 XVelocityRange = range,
                 YVelocityRange = range,
                 MassRange = range,
-                DiameterRange = range
+                DiameterRange = range,
+                DiagnosticFileName = diagnosticFileName
             };
 
             Assert.AreEqual(0, data.GetBalls().Count);
@@ -67,6 +73,8 @@ namespace Project.Data.Test
             data.Load(balls);
 
             Assert.AreEqual(balls, data.GetBalls().Count);
+
+            data.Dispose();
         }
     }
 }

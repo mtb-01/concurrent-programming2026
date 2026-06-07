@@ -70,6 +70,21 @@ namespace Project.Logic.Test
             listOfBalls.Add(ball);
             RaiseBallAddedNotification(ball);
         }
+
+        public override bool StartDiagnostics()
+        {
+            return true;
+        }
+
+        public override bool IsDiagnosticsStarted()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void WriteDiagnostic(string text)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     [TestClass]

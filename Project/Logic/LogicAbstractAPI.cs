@@ -39,6 +39,8 @@ namespace Project.Logic
 
         internal abstract ICollisionObject GetArea();
 
+        internal abstract void WriteDiagnostic(string text);
+
         public event EventHandler<bool>? IsStartedChangedNotification;
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;

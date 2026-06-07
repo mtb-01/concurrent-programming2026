@@ -23,11 +23,17 @@ namespace Project.Data
 
         public abstract void Load(int count);
 
+        public abstract bool StartDiagnostics();
+
+        public abstract bool IsDiagnosticsStarted();
+
         public abstract List<IBall> GetBalls();
 
         public abstract void ClearBalls();
 
         public abstract void AddBall(IVector initialPosition, IVector initialVelocity, double mass, double diameter);
+
+        public abstract void WriteDiagnostic(string text);
 
         public event EventHandler<IBall>? BallAddedNotification;
         

@@ -29,6 +29,8 @@ namespace Project.Logic
         private Thread? mainThread;
         private CancellationTokenSource? cancelSource;
 
+        private long lastMoveTime;
+
 
         public Ball(int id, IVector initialPosition, IVector initialVelocity, double mass, double diameter, LogicAbstractAPI logic)
         {
@@ -50,6 +52,7 @@ namespace Project.Logic
             if (isStarted())
                 return;
             
+            lastMoveTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             cancelSource = new CancellationTokenSource();
             mainThread = new Thread(new ThreadStart(
                 () => MainLoop(cancelSource.Token)));
@@ -78,12 +81,19 @@ namespace Project.Logic
                 }
                 Thread.Sleep(TimeSpan.FromSeconds(MoveDelay));
                 Simulate();
+                logic.WriteDiagnostic("Kulka " + ID + ": Pozycja (" +
+                    Position.X + ", " + Position.Y + ") Prędkość (" +
+                    Velocity.X + ", " + Velocity.Y + ")");
             }
         }
 
         internal void Simulate()
         {
-            Vector CollideAndReturnRemainder(ICollisionObject collisionObject, Vector movement)
+            long moveTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            double moveTimeDelta = (moveTime - lastMoveTime) / 1000.0;
+            lastMoveTime = moveTime;
+
+            Vector CollideAndReturnRemainder(ICollisionObject collisionObject, Vector movement, string collisionDiagnosticText)
             {
                 CollisionInfo collisionInfo = collisionObject.Collide(this, movement);
                 if (collisionInfo.Collided)
@@ -91,7 +101,9 @@ namespace Project.Logic
                     movement *= collisionInfo.MoveFraction;
                     Velocity = collisionInfo.NewVelocity;
                     Position = new Vector(Position.X + movement.X, Position.Y + movement.Y);
-                    movement = collisionInfo.NewVelocity * (1 - collisionInfo.MoveFraction) * MoveDelay;
+                    movement = collisionInfo.NewVelocity * (1 - collisionInfo.MoveFraction) * moveTimeDelta;
+
+                    logic.WriteDiagnostic(collisionDiagnosticText);
                 }
                 return movement;
             }
@@ -100,7 +112,7 @@ namespace Project.Logic
             MovementLock.Enter();
             try
             {
-                movement = new Vector(Velocity.X * MoveDelay, Velocity.Y * MoveDelay);
+                movement = new Vector(Velocity.X * moveTimeDelta, Velocity.Y * moveTimeDelta);
             }
             finally { MovementLock.Exit(); }
 
@@ -114,7 +126,7 @@ namespace Project.Logic
                         ball.MovementLock.Enter();
                         try
                         {
-                            movement = CollideAndReturnRemainder(ball, movement);
+                            movement = CollideAndReturnRemainder(ball, movement, "Kulka " + ID + ": Kolizja z kulką " + ball.ID);
                         }
                         finally { ball.MovementLock.Exit(); }
                     }
@@ -128,7 +140,7 @@ namespace Project.Logic
                         MovementLock.Enter();
                         try
                         {
-                            movement = CollideAndReturnRemainder(ball, movement);
+                            movement = CollideAndReturnRemainder(ball, movement, "Kulka " + ID + ": Kolizja z kulką " + ball.ID);
                         }
                         finally { MovementLock.Exit(); }
                     }
@@ -144,7 +156,7 @@ namespace Project.Logic
             MovementLock.Enter();
             try
             {
-                movement = CollideAndReturnRemainder(logic.GetArea(), movement);
+                movement = CollideAndReturnRemainder(logic.GetArea(), movement, "Kulka " + ID + ": Kolizja ze ścianą");
                 Position = new Vector(Position.X + movement.X, Position.Y + movement.Y);
             }
             finally { MovementLock.Exit(); }

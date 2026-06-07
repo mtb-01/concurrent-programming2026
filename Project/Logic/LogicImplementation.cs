@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Project.Data;
@@ -47,6 +48,7 @@ namespace Project.Logic
                 return;
 
             isLayerStarted = true;
+            data.StartDiagnostics();
             data.Load(initialBallCount);
         }
 
@@ -142,6 +144,11 @@ namespace Project.Logic
                 return new List<Ball>(listOfBalls);
             }
             finally { listOfBallsLock.ExitReadLock(); }
+        }
+
+        internal override void WriteDiagnostic(string text)
+        {
+            data.WriteDiagnostic(DateTime.Now.ToString("HH:mm:ss.fffff") + " " + text);
         }
 
         public override IVector GetAreaSize()

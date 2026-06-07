@@ -8,6 +8,7 @@ public class DataImplementationFactory : IDataLayerFactory
     required public IVector YVelocityRange { get; set; }
     required public IVector MassRange { get; set; }
     required public IVector DiameterRange { get; set; }
+    required public string DiagnosticFileName { get; set; }
 
     public DataAbstractAPI Get()
     {
@@ -18,7 +19,8 @@ public class DataImplementationFactory : IDataLayerFactory
             XVelocityRange = this.XVelocityRange,
             YVelocityRange = this.YVelocityRange,
             MassRange = this.MassRange,
-            DiameterRange = this.DiameterRange
+            DiameterRange = this.DiameterRange,
+            DiagnosticFileName = this.DiagnosticFileName
         };
     }
 }

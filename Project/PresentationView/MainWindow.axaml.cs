@@ -17,7 +17,8 @@ public partial class MainWindow : Window
             XVelocityRange = VectorFactory.Get(-200, 200),
             YVelocityRange = VectorFactory.Get(-200, 200),
             MassRange = VectorFactory.Get(10, 40),
-            DiameterRange = VectorFactory.Get(22, 32)
+            DiameterRange = VectorFactory.Get(22, 32),
+            DiagnosticFileName = "balls_diagnostics.txt"
         };
         DataAbstractAPI.SetDataLayer(dataLayerFactory.Get());
 

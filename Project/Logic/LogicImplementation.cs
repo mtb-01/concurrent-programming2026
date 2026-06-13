@@ -24,6 +24,8 @@ namespace Project.Logic
 
         private readonly ReaderWriterLockSlim listOfBallsLock = new ReaderWriterLockSlim();
 
+        private readonly System.Timers.Timer secondsTimer;
+        private int secondsElapsed = 0;
 
         public LogicImplementation (double areaX, double areaY, DataAbstractAPI? data = null)
         {
@@ -40,6 +42,14 @@ namespace Project.Logic
                 Ball ball = new Ball(listOfBalls.Count, position, velocity, dataBall.Mass, dataBall.Diameter, this);
                 AddBall(ball);
             };
+
+            secondsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(1));
+            secondsTimer.Elapsed += (obj, e) =>
+            {
+                secondsElapsed += 1;
+                RaiseElapsedSecondsChangedNotification(secondsElapsed);
+            };
+            secondsTimer.Start();
         }
 
         public override void StartLayer(int initialBallCount)
@@ -159,6 +169,11 @@ namespace Project.Logic
         internal override ICollisionObject GetArea()
         {
             return area;
+        }
+
+        public override int GetElapsedSeconds()
+        {
+            return secondsElapsed;
         }
     }
 }

@@ -37,6 +37,8 @@ namespace Project.Logic
 
         public abstract IVector GetAreaSize();
 
+        public abstract int GetElapsedSeconds();
+
         internal abstract ICollisionObject GetArea();
 
         internal abstract void WriteDiagnostic(string text);
@@ -44,6 +46,7 @@ namespace Project.Logic
         public event EventHandler<bool>? IsStartedChangedNotification;
         public event EventHandler<IBall>? BallAddedNotification;
         public event EventHandler? BallsClearedNotification;
+        public event EventHandler<int>? ElapsedSecondsChangedNotification;
 
         protected void RaiseIsStartedChangedNotification(bool isStarted)
         {
@@ -58,6 +61,11 @@ namespace Project.Logic
         protected void RaiseBallsClearedNotification()
         {
             BallsClearedNotification?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected void RaiseElapsedSecondsChangedNotification(int elapsedSeconds)
+        {
+            ElapsedSecondsChangedNotification?.Invoke(this, elapsedSeconds);
         }
     }
 

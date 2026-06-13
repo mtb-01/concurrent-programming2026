@@ -23,6 +23,8 @@ internal class ModelImplementation : ModelAbstractAPI
                 new Ball(ball.Position.X, ball.Position.Y, Math.Clamp((ball.Mass - MassRangeMin) / (MassRangeMax - MassRangeMin), 0, 1), ball.Diameter, ball)
             );
         logicLayer.BallsClearedNotification += (sender, e) => RaiseBallsClearedNotification();
+
+        logicLayer.ElapsedSecondsChangedNotification += (sender, e) => RaiseElapsedTimeChangedNotification();
     }
 
 
@@ -84,5 +86,15 @@ internal class ModelImplementation : ModelAbstractAPI
     public override double GetAreaBorder()
     {
         return 4;
+    }
+
+    public override int GetElapsedSeconds()
+    {
+        return logicLayer.GetElapsedSeconds() % 60;
+    }
+
+    public override int GetElapsedMinutes()
+    {
+        return logicLayer.GetElapsedSeconds() / 60;
     }
 }

@@ -32,6 +32,14 @@
             <Button ClickMode="Press" Command="{Binding ClearBallsCommand}">Clear balls</Button>
             <Button ClickMode="Press" Command="{Binding QuitCommand}">Quit</Button>
         </StackPanel>
+        <TextBlock FontSize="14" HorizontalAlignment="Center" DockPanel.Dock="Top">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="Elapsed time: {0}:{1:00}">
+                    <Binding Path="ElapsedMinutes" />
+                    <Binding Path="ElapsedSeconds" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
         <TextBlock Text="{Binding NumberOfBalls}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
         <TextBlock Text="Number of balls: " HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
         <Viewbox>

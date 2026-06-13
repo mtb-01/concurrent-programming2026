@@ -34,6 +34,26 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public int ElapsedMinutes
+    {
+        get;
+        private set
+        {
+            field = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public int ElapsedSeconds
+    {
+        get;
+        private set
+        {
+            field = value;
+            RaisePropertyChanged();
+        }
+    }
+
     public bool IsInitializing => !modelLayer.IsInitialized();
     public double AreaX => modelLayer.GetAreaX();
     public double AreaY => modelLayer.GetAreaY();
@@ -61,6 +81,11 @@ public class MainWindowViewModel : ViewModelBase
             NumberOfBalls = 0;
         };
         modelLayer.InitializedNotification += (sender, e) => RaisePropertyChanged(nameof(IsInitializing));
+        modelLayer.ElapsedTimeChangedNotification += (sender, e) =>
+        {
+            ElapsedMinutes = modelLayer.GetElapsedMinutes();
+            ElapsedSeconds = modelLayer.GetElapsedSeconds();
+        };
 
         CreateBallCommand = new ClickCommand(
             p => modelLayer.IsInitialized(),

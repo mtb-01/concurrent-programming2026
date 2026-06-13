@@ -30,11 +30,14 @@ public abstract class ModelAbstractAPI
     public abstract double GetAreaX();
     public abstract double GetAreaY();
     public abstract double GetAreaBorder();
+    public abstract int GetElapsedSeconds();
+    public abstract int GetElapsedMinutes();
 
     public event EventHandler? InitializedNotification;
     public event EventHandler<bool>? IsStartedChangedNotification;
     public event EventHandler<IBall>? BallAddedNotification;
     public event EventHandler? BallsClearedNotification;
+    public event EventHandler? ElapsedTimeChangedNotification;
 
     protected void RaiseInitializedNotification()
     {
@@ -54,6 +57,11 @@ public abstract class ModelAbstractAPI
     protected void RaiseBallsClearedNotification()
     {
         BallsClearedNotification?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void RaiseElapsedTimeChangedNotification()
+    {
+        ElapsedTimeChangedNotification?.Invoke(this, EventArgs.Empty);
     }
 }
 

@@ -23,6 +23,11 @@ internal class TestLogicImplementation : LogicAbstractAPI
         throw new NotImplementedException();
     }
 
+    public override int GetElapsedSeconds()
+    {
+        throw new NotImplementedException();
+    }
+
     public override bool IsStarted()
     {
         return false;
